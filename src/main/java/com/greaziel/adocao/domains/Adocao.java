@@ -1,4 +1,4 @@
-package com.greaziel.adocao.model;
+package com.greaziel.adocao.domains;
 
 public class Adocao {
 
