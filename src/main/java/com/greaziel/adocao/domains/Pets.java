@@ -1,6 +1,6 @@
 package com.greaziel.adocao.domains;
 
-public class Animal {
+public class Pets {
 
     private Integer id;
     private Pessoa proprietario;
@@ -11,14 +11,23 @@ public class Animal {
     private String sexo;
     private Double peso;
     private String tipo;
-    private boolean vacinado;
+    private Boolean vacinado;
+    private Boolean doado;
 
-    public Animal() {
+    public Pets() {
 
     }
 
     public Pessoa getProprietario() {
         return proprietario;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setProprietario(Pessoa proprietario) {
@@ -81,11 +90,36 @@ public class Animal {
         this.tipo = tipo;
     }
 
-    public boolean isVacinado() {
+    public Boolean isVacinado() {
         return vacinado;
     }
 
-    public void setVacinado(boolean vacinado) {
+    public void setVacinado(Boolean vacinado) {
         this.vacinado = vacinado;
+    }
+
+    public Boolean isDoado() {
+        return doado;
+    }
+
+    public void setDoado(Boolean doado) {
+        this.doado = doado;
+    }
+
+    @Override
+    public String toString() {
+        return "Pets{" +
+                "id=" + id +
+                ", proprietario=" + proprietario +
+                ", nome='" + nome + '\'' +
+                ", raca='" + raca + '\'' +
+                ", porte='" + porte + '\'' +
+                ", cor='" + cor + '\'' +
+                ", sexo='" + sexo + '\'' +
+                ", peso=" + peso +
+                ", tipo='" + tipo + '\'' +
+                ", vacinado=" + vacinado +
+                ", doado=" + doado +
+                '}';
     }
 }

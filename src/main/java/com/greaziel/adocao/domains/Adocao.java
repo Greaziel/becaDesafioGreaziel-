@@ -5,7 +5,7 @@ public class Adocao {
     private Integer id;
     private Doador doador;
     private Donatario donatario;
-    private Animal animal;
+    private Pets animal;
 
     public Adocao() {
 
@@ -35,11 +35,21 @@ public class Adocao {
         this.donatario = donatario;
     }
 
-    public Animal getAnimal() {
+    public Pets getAnimal() {
         return animal;
     }
 
-    public void setAnimal(Animal animal) {
+    public void setAnimal(Pets animal) {
         this.animal = animal;
+    }
+
+    @Override
+    public String toString() {
+        return "Adocao{" +
+                "id=" + id +
+                ", doador=" + doador +
+                ", donatario=" + donatario +
+                ", animal=" + animal +
+                '}';
     }
 }
