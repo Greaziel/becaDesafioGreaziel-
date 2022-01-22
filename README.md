@@ -30,7 +30,7 @@
   
   <tr>
     <td>Java</td>
-    <td>13</td>
+    <td>11</td>
   </tr>
    <tr>
     <td>Spring Boot</td>
@@ -40,4 +40,4 @@
 
 ## Class diagram
 
-![Imagem01](https://user-images.githubusercontent.com/80070029/150359140-82172c93-9f10-4f0d-90a6-e94f8713c2da.png)
+![Imagem01](Diagrama de Classe.png)
