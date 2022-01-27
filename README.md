@@ -40,7 +40,7 @@
 
 ## Class diagram
 
-![Imagem01](Diagrama de Classe.png)
+![Imagem01](https://github.com/Greaziel/becaDesafioGreaziel-/blob/develop/Diagrama%20de%20Classe.png)
 
 ## Some end points
 
