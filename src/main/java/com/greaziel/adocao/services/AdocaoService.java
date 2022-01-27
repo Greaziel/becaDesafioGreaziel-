@@ -1,8 +1,6 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.*;
-import com.greaziel.adocao.repositorys.AdocaoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

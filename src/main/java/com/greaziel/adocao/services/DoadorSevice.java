@@ -18,7 +18,7 @@ public class DoadorSevice {
         return doador;
     }
 
-    public void deletar( int id){
+    public void deletar(int id){
        //
     }
 
