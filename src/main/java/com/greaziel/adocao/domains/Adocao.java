@@ -44,7 +44,7 @@ public class Adocao {
     }
 
     @Override
-    public String toString() {
+public String toString() {
         return "Adocao{" +
                 "id=" + id +
                 ", doador=" + doador +

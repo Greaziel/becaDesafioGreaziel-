@@ -1,6 +1,8 @@
 package com.greaziel.adocao.controllers;
 
 import com.greaziel.adocao.domains.Donatario;
+import com.greaziel.adocao.services.DonatarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,54 +12,38 @@ import java.util.List;
 @RequestMapping("/donatario")
 public class DonatarioController {
 
+    @Autowired
+    private DonatarioService donatarioService;
+
     @PostMapping
     public ResponseEntity<Donatario> criar(@RequestBody Donatario donatario){
-        donatario.setId(1);
-        return ResponseEntity.created(null).body(donatario);
+        Donatario donatarioCriado = donatarioService.criar(donatario);
+        return ResponseEntity.created(null).body(donatarioCriado);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Donatario> atualizar(@RequestBody Donatario donatario, @PathVariable int id){
-        donatario.setId(id);
-        return ResponseEntity.ok(donatario);
+        Donatario donatarioAtualizado = donatarioService.atualizar(donatario, id);
+        return ResponseEntity.ok(donatarioAtualizado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deletar(@PathVariable int id){
+        donatarioService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Donatario> obter(@PathVariable int id){
-        Donatario donatario = new Donatario();
-        donatario.setId(id);
-        donatario.setNome("Cesar");
-        donatario.setCidade("São Paulo");
+        Donatario donatarioObtido = donatarioService.obter(id);
 
-        return ResponseEntity.ok(donatario);
+        return ResponseEntity.ok(donatarioObtido);
     }
 
     @GetMapping
     public ResponseEntity<List<Donatario>> listar(){
-        Donatario donatario1 = new Donatario();
-        donatario1.setId(1);
-        donatario1.setNome("Joao");
-        donatario1.setCidade("Belo Horizonte");
+        List<Donatario> listaDonatario = donatarioService.listar();
 
-        Donatario donatario2 = new Donatario();
-        donatario2.setId(2);
-        donatario2.setNome("Veronica");
-        donatario2.setCidade("Lisboa");
-
-        Donatario donatario3 = new Donatario();
-        donatario3.setId(3);
-        donatario3.setNome("Luffy");
-        donatario3.setCidade("Wano");
-
-        return ResponseEntity.ok(List.of(
-                donatario1,
-                donatario2,
-                donatario3
-        ));
+        return ResponseEntity.ok(listaDonatario);
     }
 }
