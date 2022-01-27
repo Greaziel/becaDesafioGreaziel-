@@ -1,14 +1,13 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.*;
-import com.greaziel.adocao.repositorys.AdocaoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.greaziel.adocao.interfaces.AdocaoInterface;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AdocaoService{
+public class AdocaoService implements AdocaoInterface {
 
 
     public Adocao criar(Adocao adocao){
