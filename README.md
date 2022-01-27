@@ -41,3 +41,7 @@
 ## Class diagram
 
 ![Imagem01](Diagrama de Classe.png)
+
+## Some end points
+
+![Imagem02](EndPoints.jpg)
