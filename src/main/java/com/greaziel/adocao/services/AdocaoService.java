@@ -1,12 +1,16 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.*;
+<<<<<<< HEAD
+=======
+import com.greaziel.adocao.interfaces.AdocaoInterface;
+>>>>>>> 50eec1ff9b54c496ed044b74017b6d121321f7b8
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AdocaoService{
+public class AdocaoService implements AdocaoInterface {
 
 
     public Adocao criar(Adocao adocao){

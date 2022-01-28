@@ -3,12 +3,13 @@ package com.greaziel.adocao.services;
 import com.greaziel.adocao.domains.Doador;
 import com.greaziel.adocao.domains.Pessoa;
 import com.greaziel.adocao.domains.Pets;
+import com.greaziel.adocao.interfaces.PetsInterface;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PetsService {
+public class PetsService implements PetsInterface {
 
     public Pets criar(Pets pets) {
         pets.setId(3);

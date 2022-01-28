@@ -1,12 +1,13 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Donatario;
+import com.greaziel.adocao.interfaces.DonatarioInterface;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DonatarioService {
+public class DonatarioService implements DonatarioInterface {
 
 
     public Donatario criar(Donatario donatario){

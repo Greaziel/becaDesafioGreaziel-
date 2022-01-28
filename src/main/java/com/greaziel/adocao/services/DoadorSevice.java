@@ -1,12 +1,13 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Doador;
+import com.greaziel.adocao.interfaces.DoadorInterface;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class DoadorSevice {
+public class DoadorSevice implements DoadorInterface {
 
    public Doador criar(Doador doador){
         doador.setId(1);
