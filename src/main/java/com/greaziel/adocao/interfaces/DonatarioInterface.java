@@ -8,11 +8,11 @@ public interface DonatarioInterface {
 
     Donatario criar(Donatario donatario);
 
-    Donatario atualizar(Donatario donatario, int id);
+    Donatario atualizar(Donatario donatario, Integer id);
 
-    void deletar(int id);
+    void deletar(Integer id);
 
-    Donatario obter(int id);
+    Donatario obter(Integer id);
 
     List<Donatario> listar();
 }

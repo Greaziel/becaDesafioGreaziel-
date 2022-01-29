@@ -1,8 +1,10 @@
 package com.greaziel.adocao.domains;
 
-public class Doador extends Pessoa{
+import javax.persistence.*;
 
-    public Doador(){
+@Entity
+public class Doador extends Pessoa {
 
+    public Doador() {
     }
 }

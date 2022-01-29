@@ -2,6 +2,8 @@ package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Doador;
 import com.greaziel.adocao.interfaces.DoadorInterface;
+import com.greaziel.adocao.repositorys.DoadorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,49 +11,45 @@ import java.util.List;
 @Service
 public class DoadorSevice implements DoadorInterface {
 
-   public Doador criar(Doador doador){
-        doador.setId(1);
-        return doador;
+    @Autowired
+    private DoadorRepository doadorRepository;
+
+    public Doador criar(Doador doador) {
+        if(doador.getNome().length() <= 3){
+            throw new RuntimeException("Nome inválido");
+        }
+        Doador doadorCriado = doadorRepository.save(doador);
+        return doadorCriado;
     }
 
-    public Doador atualizar(Doador doador, int id){
-        doador.setId(id);
-        return doador;
+    public Doador atualizar(Doador doador, Integer id) {
+        Doador doadorObtido = this.obter(id);
+        doadorObtido.setNome(doador.getNome());
+        doadorObtido.setCidade(doador.getCidade());
+        doadorObtido.setCep(doador.getCep());
+        doadorObtido.setEstado(doador.getEstado());
+        doadorObtido.setLogradouro(doador.getLogradouro());
+        doadorObtido.setNumero(doador.getNumero());
+        doadorRepository.save(doadorObtido);
+        return doadorObtido;
     }
 
-    public void deletar(int id){
-       //
+    public void deletar(Integer id) {
+
+        doadorRepository.deleteById(id);
     }
 
-    public Doador obter(int id){
-        Doador doador = new Doador();
-        doador.setId(id);
-        doador.setNome("Vivi");
-        doador.setCidade("Brasilia");
+    public Doador obter(Integer id) {
+        Doador doadorObtido = doadorRepository.findById(id).get();
+        if(doadorObtido.getId() == null){
+            throw new RuntimeException("Doador com o id " + doadorObtido.getId() + " não encontrado");
+        }
 
-        return doador;
+        return doadorObtido;
     }
 
     public List<Doador> listar() {
-        Doador doador1 = new Doador();
-        doador1.setId(1);
-        doador1.setNome("Debora");
-        doador1.setCidade("Brasilia");
-
-        Doador doador2 = new Doador();
-        doador2.setId(2);
-        doador2.setNome("Jose");
-        doador2.setCidade("Dubai");
-
-        Doador doador3 = new Doador();
-        doador3.setId(3);
-        doador3.setNome("Pedro");
-        doador3.setCidade("Recife");
-
-        return List.of(
-                doador1,
-                doador2,
-                doador3
-        );
+        List<Doador> listaDoador = doadorRepository.findAll();
+        return listaDoador;
     }
 }

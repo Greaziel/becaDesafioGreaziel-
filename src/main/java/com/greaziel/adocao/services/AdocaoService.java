@@ -1,10 +1,9 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.*;
-<<<<<<< HEAD
-=======
 import com.greaziel.adocao.interfaces.AdocaoInterface;
->>>>>>> 50eec1ff9b54c496ed044b74017b6d121321f7b8
+import com.greaziel.adocao.repositorys.AdocaoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,104 +11,50 @@ import java.util.List;
 @Service
 public class AdocaoService implements AdocaoInterface {
 
+    @Autowired
+    private DoadorSevice doadorSevice;
 
-    public Adocao criar(Adocao adocao){
-        Doador doador = new Doador();
-        doador.setId(2);
-        doador.setNome("Vitor");
+    @Autowired
+    private DonatarioService donatarioService;
 
-        Pessoa donatario = new Donatario();
-        donatario.setId(3);
-        donatario.setNome("lilian");
+    @Autowired
+    private PetsService petsService;
 
-        Pets pets = new Pets();
-        pets.setId(5);
-        pets.setNome("Zeus");
-        pets.setProprietario(donatario);
+    @Autowired
+    private AdocaoRepository adocaoRepository;
 
-        adocao.setId(1);
-        adocao.setDoador(doador);
-        adocao.setDonatario((Donatario) donatario);
-        adocao.setAnimal(pets);
 
-       return adocao;
+    public Adocao criar(Adocao adocao) {
+        Doador doador = doadorSevice.obter(adocao.getDoador().getId());
+        Donatario donatario = donatarioService.obter(adocao.getDonatario().getId());
+        Pets pets = petsService.obter(adocao.getAnimal().getId());
+        Adocao adocaoCriada = adocaoRepository.save(adocao);
+
+        return adocaoCriada;
     }
 
-    public Adocao atualizar(Adocao adocao, int id){
-        adocao.setId(id);
+    public Adocao atualizar(Adocao adocao, Integer id) {
+        Adocao adocaoAtualizada = this.obter(id);
+        Doador doador = doadorSevice.obter(adocao.getDoador().getId());
+        Donatario donatario = donatarioService.obter(adocao.getDonatario().getId());
+        Pets pets = petsService.obter(adocao.getAnimal().getId());
         return adocao;
     }
 
-    public void deletar(int id){
-        //
+    public void deletar(Integer id) {
+        adocaoRepository.deleteById(id);
     }
 
-    public Adocao obter(int id){
-        Adocao adocao = new Adocao();
-        adocao.setId(id);
-        return adocao;
+    public Adocao obter(Integer id) {
+        Adocao adocaoObter = adocaoRepository.findById(id).get();
+
+        return adocaoObter;
     }
 
-    public List<Adocao> listar(){
-        Doador doador1 = new Doador();
-        doador1.setId(3);
-        doador1.setNome("Pedro");
+    public List<Adocao> listar() {
+        List<Adocao> listaAdocao = adocaoRepository.findAll();
 
-        Donatario donatario1 = new Donatario();
-        donatario1.setId(4);
-        doador1.setNome("Vivi");
-
-        Pets pets1 = new Pets();
-        pets1.setId(3);
-        pets1.setNome("Hulk");
-
-        Adocao adocao1 = new Adocao();
-        adocao1.setId(1);
-        adocao1.setAnimal(pets1);
-        adocao1.setDoador(doador1);
-        adocao1.setDonatario(donatario1);
-
-        Doador doador2 = new Doador();
-        doador2.setId(4);
-        doador1.setNome("Ruth");
-
-        Donatario donatario2 = new Donatario();
-        donatario1.setId(1);
-        doador1.setNome("Lucas");
-
-        Pets pets2 = new Pets();
-        pets1.setId(3);
-        pets1.setNome("Laila");
-
-        Adocao adocao2 = new Adocao();
-        adocao2.setId(2);
-        adocao2.setAnimal(pets1);
-        adocao2.setDoador(doador1);
-        adocao2.setDonatario(donatario1);
-
-        Doador doador3 = new Doador();
-        doador3.setId(2);
-        doador1.setNome("Melissa");
-
-        Donatario donatario3 = new Donatario();
-        donatario3.setId(3);
-        doador1.setNome("Renata");
-
-        Pets pets3 = new Pets();
-        pets1.setId(3);
-        pets1.setNome("Mel");
-
-        Adocao adocao3 = new Adocao();
-        adocao3.setId(3);
-        adocao3.setAnimal(pets1);
-        adocao3.setDoador(doador1);
-        adocao3.setDonatario(donatario1);
-
-        return List.of(
-                adocao1,
-                adocao2,
-                adocao3
-        );
+        return listaAdocao;
 
     }
 }

@@ -42,6 +42,30 @@
 
 ![Imagem01](https://github.com/Greaziel/becaDesafioGreaziel-/blob/develop/Diagrama%20de%20Classe.png)
 
-## Some end points
+## In challenge two it was implemented:
+
++ package controllers
+
+### Some end points
 
 ![Imagem02](EndPoints.jpg)
+
+## In challenge three it was implemented:
+
++ package serices
++ AdocaoService
++ DoadorService
++ DonatarioService
++ PetsService
+
+## In challenge four it was implemented:
+
++ package repositorys
++ AdocaoRepository
++ DoadorRepository
++ DonatarioRepository
++ PetsRepository
+
+The integration with the database and the remodeling of the controllers classes were also carried out.
+
+## In to challenge five it was implemented:

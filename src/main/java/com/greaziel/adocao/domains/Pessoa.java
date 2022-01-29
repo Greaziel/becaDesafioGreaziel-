@@ -1,7 +1,12 @@
 package com.greaziel.adocao.domains;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public class Pessoa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String cep;
@@ -67,18 +72,5 @@ public class Pessoa {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    @Override
-    public String toString() {
-        return "Pessoa{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", cep='" + cep + '\'' +
-                ", logradouro='" + logradouro + '\'' +
-                ", numero=" + numero +
-                ", cidade='" + cidade + '\'' +
-                ", estado='" + estado + '\'' +
-                '}';
     }
 }

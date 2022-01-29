@@ -1,112 +1,90 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Doador;
+import com.greaziel.adocao.domains.Donatario;
 import com.greaziel.adocao.domains.Pessoa;
 import com.greaziel.adocao.domains.Pets;
 import com.greaziel.adocao.interfaces.PetsInterface;
+import com.greaziel.adocao.repositorys.PetsRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PetsService implements PetsInterface {
 
+    private final PetsRepository petsRepository;
+
+    private final DoadorSevice doadorSevice;
+
+    private final DonatarioService donatarioService;
+
     public Pets criar(Pets pets) {
-        pets.setId(3);
-        return pets;
+        Doador doadorObtido = doadorSevice.obter(pets.getProprietario().getId());
+
+        if (pets.getNome().length() < 3) {
+            throw new RuntimeException("Nome inválido");
+        }
+        pets.setProprietario(doadorObtido);
+        Pets petsCriaado = petsRepository.save(pets);
+        return petsCriaado;
     }
 
-    public Pets atualizar(Pets pets, int id){
-        pets.setId(id);
-        return pets;
+    public Pets atualizar(Pets pets, Integer id) {
+        if (pets.getNome().length() < 3) {
+            throw new RuntimeException("Nome inválido");
+        }
+        Pets petAtualizado = this.obter(id);
+        petAtualizado.setNome(pets.getNome());
+        petAtualizado.setSexo(pets.getSexo());
+        petAtualizado.setPeso(pets.getPeso());
+        petAtualizado.setTipo(pets.getTipo());
+        petAtualizado.setPorte(pets.getPorte());
+        petAtualizado.setRaca(pets.getRaca());
+        petAtualizado.setCor(pets.getCor());
+        petAtualizado.setVacinado(pets.getVacinado());
+        petAtualizado.setDoado(pets.getDoado());
+        Doador doadorObtido = doadorSevice.obter(pets.getProprietario().getId());
+        petAtualizado.setProprietario(doadorObtido);
+        petsRepository.save(petAtualizado);
+
+        return petAtualizado;
     }
 
-    public void deletar(int id){
-       //
+    public void deletar(Integer id) {
+        petsRepository.deleteById(id);
     }
 
-    public Pets obter(int id){
-        Pessoa doador = new Doador();
-        doador.setId(id);
-        doador.setNome("Vivi");
-        doador.setCidade("Brasilia");
-        Pets pets = new Pets();
-        pets.setId(id);
-        pets.setNome("Rex");
-        pets.setCor("Branco");
-        pets.setPeso(6.77);
-        pets.setPorte("Pequeno");
-        pets.setRaca("Pincher");
-        pets.setSexo("Macho");
-        pets.setTipo("Cachorro");
-        pets.setVacinado(true);
-        pets.setProprietario(doador);
+    public Pets obter(Integer id) {
+        Pets petObtido = petsRepository.findById(id).get();
 
-        return pets;
+        return petObtido;
 
     }
 
-    public List<Pets> listar(){
-        Pessoa doador1 = new Doador();
-        doador1.setNome("Pedro");
+    public List<Pets> listar() {
+        List<Pets> listaPets = petsRepository.findAll();
+
+        return listaPets;
+    }
+
+    public List<Pets> mathPetDonatario(Integer idDonatario) {
         Pets pets1 = new Pets();
         pets1.setId(1);
-        pets1.setNome("Hulk");
-        pets1.setTipo("Cachorro");
-        pets1.setProprietario(doador1);
+        Doador doador = doadorSevice.obter(pets1.getProprietario().getId());
+        pets1.setProprietario(doador);
 
-        Pessoa doador2 = new Doador();
-        doador2.setNome("Ruth");
         Pets pets2 = new Pets();
-        pets2.setId(2);
-        pets2.setNome("Laila");
-        pets2.setTipo("Gato");
+        Doador doador2 = doadorSevice.obter(pets1.getProprietario().getId());
         pets2.setProprietario(doador2);
-
-        Pessoa doador3 = new Doador();
-        doador3.setNome("Felipe");
-        Pets pets3 = new Pets();
-        pets3.setId(3);
-        pets3.setNome("Lulu");
-        pets3.setTipo("Gato");
-        pets3.setProprietario(doador3);
 
         return List.of(
                 pets1,
-                pets2,
-                pets3
+                pets2
         );
-    }
 
-    public List<Pets> mathPetDonatario(Integer idDonatario){
-        Pessoa doador1 = new Doador();
-        doador1.setNome("Pedro");
-        Pets pets1 = new Pets();
-        pets1.setId(1);
-        pets1.setNome("Hulk");
-        pets1.setTipo("Cachorro");
-        pets1.setProprietario(doador1);
-
-        Pessoa doador2 = new Doador();
-        doador2.setNome("Ruth");
-        Pets pets2 = new Pets();
-        pets2.setId(2);
-        pets2.setNome("Laila");
-        pets2.setTipo("Gato");
-        pets2.setProprietario(doador2);
-
-        Pessoa doador3 = new Doador();
-        doador3.setNome("Felipe");
-        Pets pets3 = new Pets();
-        pets3.setId(3);
-        pets3.setNome("Lulu");
-        pets3.setTipo("Gato");
-        pets3.setProprietario(doador3);
-
-        return List.of(
-                pets1,
-                pets2,
-                pets3
-        );
     }
 }

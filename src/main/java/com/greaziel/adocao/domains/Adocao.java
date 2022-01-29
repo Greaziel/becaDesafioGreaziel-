@@ -1,14 +1,24 @@
 package com.greaziel.adocao.domains;
 
+import javax.persistence.*;
+
+@Entity
 public class Adocao {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @OneToOne
     private Doador doador;
+
+    @OneToOne
     private Donatario donatario;
+
+    @OneToOne
     private Pets animal;
 
     public Adocao() {
-
     }
 
     public Integer getId() {
@@ -41,15 +51,5 @@ public class Adocao {
 
     public void setAnimal(Pets animal) {
         this.animal = animal;
-    }
-
-    @Override
-public String toString() {
-        return "Adocao{" +
-                "id=" + id +
-                ", doador=" + doador +
-                ", donatario=" + donatario +
-                ", animal=" + animal +
-                '}';
     }
 }
