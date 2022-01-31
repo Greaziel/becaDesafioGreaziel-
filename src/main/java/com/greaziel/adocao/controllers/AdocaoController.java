@@ -16,31 +16,31 @@ public class AdocaoController {
     private AdocaoService adocaoService;
 
     @PostMapping
-    public ResponseEntity<Adocao> criar(@RequestBody Adocao adocao){
-       Adocao adocaoCriada = adocaoService.criar(adocao);
+    public ResponseEntity<Adocao> criar(@RequestBody Adocao adocao) {
+        Adocao adocaoCriada = adocaoService.criar(adocao);
         return ResponseEntity.created(null).body(adocaoCriada);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Adocao> atualizar(@RequestBody Adocao adocao, @PathVariable int id){
+    public ResponseEntity<Adocao> atualizar(@RequestBody Adocao adocao, @PathVariable int id) {
         Adocao adocaoAtualizada = adocaoService.atualizar(adocao, id);
         return ResponseEntity.ok(adocaoAtualizada);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deletar(@PathVariable int id){
+    public ResponseEntity deletar(@PathVariable int id) {
         adocaoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Adocao> obter(@PathVariable int id){
-       Adocao adocaoObtida = adocaoService.obter(id);
+    public ResponseEntity<Adocao> obter(@PathVariable int id) {
+        Adocao adocaoObtida = adocaoService.obter(id);
         return ResponseEntity.ok(adocaoObtida);
     }
 
     @GetMapping
-    public ResponseEntity<List<Adocao>> listar(){
+    public ResponseEntity<List<Adocao>> listar() {
         List<Adocao> listaAdocao = adocaoService.listar();
         return ResponseEntity.ok(listaAdocao);
 

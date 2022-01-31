@@ -16,25 +16,25 @@ public class DoadorController {
     private DoadorSevice doadorSevice;
 
     @PostMapping
-        public ResponseEntity<Doador> criar(@RequestBody Doador doador){
+    public ResponseEntity<Doador> criar(@RequestBody Doador doador) {
         Doador doadorCriado = doadorSevice.criar(doador);
         return ResponseEntity.created(null).body(doadorCriado);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Doador> atualizar(@RequestBody Doador doador, @PathVariable int id){
+    public ResponseEntity<Doador> atualizar(@RequestBody Doador doador, @PathVariable Integer id) {
         Doador doadorAtualizado = doadorSevice.atualizar(doador, id);
         return ResponseEntity.ok(doadorAtualizado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deletar(@PathVariable int id){
+    public ResponseEntity deletar(@PathVariable Integer id) {
         doadorSevice.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doador> obter(@PathVariable int id){
+    public ResponseEntity<Doador> obter(@PathVariable Integer id) {
         Doador doadorObtido = doadorSevice.obter(id);
         return ResponseEntity.ok(doadorObtido);
     }

@@ -8,11 +8,11 @@ public interface DoadorInterface {
 
     Doador criar(Doador doador);
 
-    Doador atualizar(Doador doador, int id);
+    Doador atualizar(Doador doador, Integer id);
 
-    void deletar( int id);
+    void deletar(Integer id);
 
-    Doador obter(int id);
+    Doador obter(Integer id);
 
     List<Doador> listar();
 }

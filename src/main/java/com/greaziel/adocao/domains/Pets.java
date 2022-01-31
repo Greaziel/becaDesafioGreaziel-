@@ -1,9 +1,13 @@
 package com.greaziel.adocao.domains;
 
+import javax.persistence.*;
+
+@Entity
 public class Pets {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Pessoa proprietario;
     private String nome;
     private String raca;
     private String porte;
@@ -14,12 +18,10 @@ public class Pets {
     private Boolean vacinado;
     private Boolean doado;
 
+    @OneToOne
+    private Doador proprietario;
+
     public Pets() {
-
-    }
-
-    public Pessoa getProprietario() {
-        return proprietario;
     }
 
     public Integer getId() {
@@ -28,10 +30,6 @@ public class Pets {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public void setProprietario(Pessoa proprietario) {
-        this.proprietario = proprietario;
     }
 
     public String getNome() {
@@ -90,7 +88,7 @@ public class Pets {
         this.tipo = tipo;
     }
 
-    public Boolean isVacinado() {
+    public Boolean getVacinado() {
         return vacinado;
     }
 
@@ -98,7 +96,7 @@ public class Pets {
         this.vacinado = vacinado;
     }
 
-    public Boolean isDoado() {
+    public Boolean getDoado() {
         return doado;
     }
 
@@ -106,20 +104,11 @@ public class Pets {
         this.doado = doado;
     }
 
-    @Override
-    public String toString() {
-        return "Pets{" +
-                "id=" + id +
-                ", proprietario=" + proprietario +
-                ", nome='" + nome + '\'' +
-                ", raca='" + raca + '\'' +
-                ", porte='" + porte + '\'' +
-                ", cor='" + cor + '\'' +
-                ", sexo='" + sexo + '\'' +
-                ", peso=" + peso +
-                ", tipo='" + tipo + '\'' +
-                ", vacinado=" + vacinado +
-                ", doado=" + doado +
-                '}';
+    public Doador getProprietario() {
+        return proprietario;
+    }
+
+    public void setProprietario(Doador proprietario) {
+        this.proprietario = proprietario;
     }
 }

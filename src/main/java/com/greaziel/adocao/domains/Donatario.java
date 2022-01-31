@@ -1,13 +1,17 @@
 package com.greaziel.adocao.domains;
 
+
+import javax.persistence.Entity;
+
+@Entity
 public class Donatario extends Pessoa {
+
     private String tipoPet;
     private String corPet;
     private String racaPet;
     private String portePet;
 
-    public Donatario(){
-
+    public Donatario() {
     }
 
     public String getTipoPet() {

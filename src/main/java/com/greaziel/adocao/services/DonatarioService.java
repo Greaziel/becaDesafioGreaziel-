@@ -2,6 +2,8 @@ package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Donatario;
 import com.greaziel.adocao.interfaces.DonatarioInterface;
+import com.greaziel.adocao.repositorys.DonatarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,50 +11,52 @@ import java.util.List;
 @Service
 public class DonatarioService implements DonatarioInterface {
 
+    @Autowired
+    private DonatarioRepository donatarioRepository;
 
-    public Donatario criar(Donatario donatario){
-        donatario.setId(1);
-        return donatario;
+    public Donatario criar(Donatario donatario) {
+        if (donatario.getNome().length() <= 3) {
+            throw new RuntimeException("Nome inválido");
+        }
+        Donatario donatarioCriado = donatarioRepository.save(donatario);
+        return donatarioCriado;
     }
 
-    public Donatario atualizar(Donatario donatario, int id){
-        donatario.setId(id);
-        return donatario;
+    public Donatario atualizar(Donatario donatario, Integer id) {
+        Donatario donatarioAtualizar = this.obter(id);
+        donatarioAtualizar.setNome(donatario.getNome());
+        donatarioAtualizar.setCidade(donatario.getCidade());
+        donatarioAtualizar.setCep(donatario.getCep());
+        donatarioAtualizar.setEstado(donatario.getEstado());
+        donatarioAtualizar.setLogradouro(donatario.getLogradouro());
+        donatarioAtualizar.setNumero(donatario.getNumero());
+        donatarioAtualizar.setCorPet(donatario.getCorPet());
+        donatarioAtualizar.setPortePet(donatario.getPortePet());
+        donatarioAtualizar.setRacaPet(donatario.getRacaPet());
+        donatarioAtualizar.setTipoPet(donatario.getTipoPet());
+        donatarioRepository.save(donatarioAtualizar);
+
+        return donatarioAtualizar;
     }
 
-    public void deletar(int id){
-       //
+    public void deletar(Integer id) {
+        donatarioRepository.deleteById(id);
     }
 
-    public Donatario obter(int id){
-        Donatario donatario = new Donatario();
-        donatario.setId(id);
-        donatario.setNome("Cesar");
-        donatario.setCidade("São Paulo");
+    public Donatario obter(Integer id) {
+        Donatario donatarioObtido = donatarioRepository.findById(id).get();
+        if (donatarioObtido.getId() == null) {
+            throw new RuntimeException("Doador com o id " + donatarioObtido.getId() + " não encontrado");
+        }
 
-        return donatario;
+        return donatarioObtido;
     }
 
-    public List<Donatario> listar(){
-        Donatario donatario1 = new Donatario();
-        donatario1.setId(1);
-        donatario1.setNome("Joao");
-        donatario1.setCidade("Belo Horizonte");
+    public List<Donatario> listar() {
 
-        Donatario donatario2 = new Donatario();
-        donatario2.setId(2);
-        donatario2.setNome("Veronica");
-        donatario2.setCidade("Lisboa");
+        List<Donatario> listaDonatario = donatarioRepository.findAll();
 
-        Donatario donatario3 = new Donatario();
-        donatario3.setId(3);
-        donatario3.setNome("Luffy");
-        donatario3.setCidade("Wano");
+        return listaDonatario;
 
-        return List.of(
-                donatario1,
-                donatario2,
-                donatario3
-        );
     }
 }

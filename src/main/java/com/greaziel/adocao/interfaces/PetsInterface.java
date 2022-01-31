@@ -8,11 +8,11 @@ public interface PetsInterface {
 
     Pets criar(Pets pets);
 
-    Pets atualizar(Pets pets, int id);
+    Pets atualizar(Pets pets, Integer id);
 
-    void deletar(int id);
+    void deletar(Integer id);
 
-    Pets obter(int id);
+    Pets obter(Integer id);
 
     List<Pets> listar();
 
