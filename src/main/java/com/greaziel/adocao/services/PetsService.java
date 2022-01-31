@@ -1,13 +1,10 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Doador;
-import com.greaziel.adocao.domains.Donatario;
-import com.greaziel.adocao.domains.Pessoa;
 import com.greaziel.adocao.domains.Pets;
 import com.greaziel.adocao.interfaces.PetsInterface;
 import com.greaziel.adocao.repositorys.PetsRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
