@@ -1,13 +1,7 @@
-package com.greaziel.adocao.domains;
+package com.greaziel.adocao.dtos.requests;
 
-import javax.persistence.*;
+public class PathPetsRequest {
 
-@Entity
-public class Pets {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     private String nome;
     private String raca;
     private String porte;
@@ -17,20 +11,7 @@ public class Pets {
     private String tipo;
     private Boolean vacinado;
     private Boolean doado;
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    private Doador proprietario;
-
-    public Pets() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Integer proprietario;
 
     public String getNome() {
         return nome;
@@ -104,11 +85,11 @@ public class Pets {
         this.doado = doado;
     }
 
-    public Doador getProprietario() {
+    public Integer getProprietario() {
         return proprietario;
     }
 
-    public void setProprietario(Doador proprietario) {
+    public void setProprietario(Integer proprietario) {
         this.proprietario = proprietario;
     }
 }

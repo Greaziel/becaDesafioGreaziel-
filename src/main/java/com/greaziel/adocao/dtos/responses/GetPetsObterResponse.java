@@ -1,12 +1,7 @@
-package com.greaziel.adocao.domains;
+package com.greaziel.adocao.dtos.responses;
 
-import javax.persistence.*;
+public class GetPetsObterResponse {
 
-@Entity
-public class Pets {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String raca;
@@ -14,15 +9,7 @@ public class Pets {
     private String cor;
     private String sexo;
     private Double peso;
-    private String tipo;
-    private Boolean vacinado;
-    private Boolean doado;
-
-    @OneToOne(cascade = CascadeType.PERSIST)
-    private Doador proprietario;
-
-    public Pets() {
-    }
+    private GetDoadorObterResponse getDoadorObterResponse;
 
     public Integer getId() {
         return id;
@@ -80,35 +67,11 @@ public class Pets {
         this.peso = peso;
     }
 
-    public String getTipo() {
-        return tipo;
+    public GetDoadorObterResponse getGetDoadorObterResponse() {
+        return getDoadorObterResponse;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public Boolean getVacinado() {
-        return vacinado;
-    }
-
-    public void setVacinado(Boolean vacinado) {
-        this.vacinado = vacinado;
-    }
-
-    public Boolean getDoado() {
-        return doado;
-    }
-
-    public void setDoado(Boolean doado) {
-        this.doado = doado;
-    }
-
-    public Doador getProprietario() {
-        return proprietario;
-    }
-
-    public void setProprietario(Doador proprietario) {
-        this.proprietario = proprietario;
+    public void setGetDoadorObterResponse(GetDoadorObterResponse getDoadorObterResponse) {
+        this.getDoadorObterResponse = getDoadorObterResponse;
     }
 }
