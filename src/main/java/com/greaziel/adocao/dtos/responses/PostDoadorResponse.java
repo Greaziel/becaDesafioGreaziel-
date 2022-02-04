@@ -5,14 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PostDonatarioResponse {
+public class PostDoadorResponse {
 
     private String nome;
+    private String logradouro;
     private String cidade;
     private String estado;
-    private String tipoPet;
-    private String corPet;
-    private String racaPet;
-    private String portePet;
 
 }

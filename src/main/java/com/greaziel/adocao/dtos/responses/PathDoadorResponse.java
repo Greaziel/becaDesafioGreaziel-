@@ -1,5 +1,10 @@
 package com.greaziel.adocao.dtos.responses;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PathDoadorResponse {
 
     private String nome;
@@ -7,35 +12,4 @@ public class PathDoadorResponse {
     private String cidade;
     private String estado;
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getLogradouro() {
-        return logradouro;
-    }
-
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 }

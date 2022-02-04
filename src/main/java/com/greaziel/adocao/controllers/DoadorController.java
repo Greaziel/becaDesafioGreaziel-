@@ -1,12 +1,11 @@
 package com.greaziel.adocao.controllers;
 
-import com.greaziel.adocao.domains.Doador;
 import com.greaziel.adocao.dtos.requests.PathDoadorRequest;
 import com.greaziel.adocao.dtos.requests.PostDoadorRequest;
 import com.greaziel.adocao.dtos.responses.GetDoadorListarResponse;
 import com.greaziel.adocao.dtos.responses.GetDoadorObterResponse;
 import com.greaziel.adocao.dtos.responses.PathDoadorResponse;
-import com.greaziel.adocao.dtos.responses.PostdoadorResponse;
+import com.greaziel.adocao.dtos.responses.PostDoadorResponse;
 import com.greaziel.adocao.services.DoadorSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,8 @@ public class DoadorController {
     private DoadorSevice doadorSevice;
 
     @PostMapping
-    public ResponseEntity<PostdoadorResponse> criar(@RequestBody PostDoadorRequest postDoadorRequest) {
-        PostdoadorResponse doadorCriado = doadorSevice.criar(postDoadorRequest);
+    public ResponseEntity<PostDoadorResponse> criar(@RequestBody PostDoadorRequest postDoadorRequest) {
+        PostDoadorResponse doadorCriado = doadorSevice.criar(postDoadorRequest);
         return ResponseEntity.created(null).body(doadorCriado);
     }
 

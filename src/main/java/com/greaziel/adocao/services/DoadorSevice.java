@@ -6,9 +6,10 @@ import com.greaziel.adocao.dtos.requests.PostDoadorRequest;
 import com.greaziel.adocao.dtos.responses.GetDoadorListarResponse;
 import com.greaziel.adocao.dtos.responses.GetDoadorObterResponse;
 import com.greaziel.adocao.dtos.responses.PathDoadorResponse;
-import com.greaziel.adocao.dtos.responses.PostdoadorResponse;
+import com.greaziel.adocao.dtos.responses.PostDoadorResponse;
 import com.greaziel.adocao.interfaces.DoadorInterface;
 import com.greaziel.adocao.repositorys.DoadorRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,46 +22,31 @@ public class DoadorSevice implements DoadorInterface {
     @Autowired
     private DoadorRepository doadorRepository;
 
-    public PostdoadorResponse criar(PostDoadorRequest postDoadorRequest) {
+    @Autowired
+    private ModelMapper modelMapper;
 
-        if(postDoadorRequest.getNome().length() <= 3){
+    public PostDoadorResponse criar(PostDoadorRequest postDoadorRequest) {
+
+        if (postDoadorRequest.getNome().length() <= 3) {
             throw new RuntimeException("Nome inválido");
         }
 
-        Doador doador = new Doador();
-        doador.setNome(postDoadorRequest.getNome());
-        doador.setCidade(postDoadorRequest.getCidade());
-        doador.setLogradouro(postDoadorRequest.getLogradouro());
-        doador.setEstado(postDoadorRequest.getEstado());
-        doador.setCep(postDoadorRequest.getCep());
-        doador.setNumero(postDoadorRequest.getNumero());
+        Doador doador = this.postDoadorRequest(postDoadorRequest);
         doadorRepository.save(doador);
 
-        PostdoadorResponse postdoadorResponse = new PostdoadorResponse();
-        postdoadorResponse.setNome(doador.getNome());
-        postdoadorResponse.setCidade(doador.getCidade());
-        postdoadorResponse.setEstado(doador.getEstado());
-        postdoadorResponse.setLogradouro(doador.getLogradouro());
+        PostDoadorResponse postDoadorResponse = this.postDoadorResponse(doador);
 
-        return postdoadorResponse;
+        return postDoadorResponse;
     }
 
     public PathDoadorResponse atualizar(PathDoadorRequest pathDoadorRequest, Integer id) {
 
         Doador doadorObtido = doadorRepository.findById(id).get();
-        doadorObtido.setNome(pathDoadorRequest.getNome());
-        doadorObtido.setCidade(pathDoadorRequest.getCidade());
-        doadorObtido.setCep(pathDoadorRequest.getCep());
-        doadorObtido.setEstado(pathDoadorRequest.getEstado());
-        doadorObtido.setLogradouro(pathDoadorRequest.getLogradouro());
-        doadorObtido.setNumero(pathDoadorRequest.getNumero());
-        doadorRepository.save(doadorObtido);
+        Doador doadorAtualizado = this.PathDoadorRequest(pathDoadorRequest);
+        doadorAtualizado.setId(doadorObtido.getId());
+        doadorRepository.save(doadorAtualizado);
 
-        PathDoadorResponse pathDoadorResponse = new PathDoadorResponse();
-        pathDoadorResponse.setNome(doadorObtido.getNome());
-        pathDoadorResponse.setCidade(doadorObtido.getCidade());
-        pathDoadorResponse.setLogradouro(doadorObtido.getLogradouro());
-        pathDoadorResponse.setEstado(doadorObtido.getEstado());
+        PathDoadorResponse pathDoadorResponse = this.pathDoadorResponse(doadorAtualizado);
 
         return pathDoadorResponse;
     }
@@ -74,18 +60,11 @@ public class DoadorSevice implements DoadorInterface {
     public GetDoadorObterResponse obter(Integer id) {
 
         Doador doadorObtido = doadorRepository.findById(id).get();
-        if(doadorObtido.getId() == null){
+        if (doadorObtido.getId() == null) {
             throw new RuntimeException("Doador com o id " + doadorObtido.getId() + " não encontrado");
         }
 
-        GetDoadorObterResponse getDoadorObter = new GetDoadorObterResponse();
-        getDoadorObter.setId(doadorObtido.getId());
-        getDoadorObter.setNome(doadorObtido.getNome());
-        getDoadorObter.setLogradouro(doadorObtido.getLogradouro());
-        getDoadorObter.setCidade(doadorObtido.getCidade());
-        getDoadorObter.setNumero(doadorObtido.getNumero());
-        getDoadorObter.setCep(doadorObtido.getCep());
-        getDoadorObter.setEstado(doadorObtido.getEstado());
+        GetDoadorObterResponse getDoadorObter = this.getDoadorObterResponse(doadorObtido);
 
         return getDoadorObter;
     }
@@ -96,8 +75,39 @@ public class DoadorSevice implements DoadorInterface {
         List<GetDoadorListarResponse> doadorListarResponse = new ArrayList<>();
 
         listaDoador.stream().forEach(doador ->
-                doadorListarResponse.add(new GetDoadorListarResponse(doador)));
+                doadorListarResponse.add(this.converter(doador)));
 
         return doadorListarResponse;
     }
+
+    private Doador postDoadorRequest(PostDoadorRequest postDoadorRequest) {
+
+        return modelMapper.map(postDoadorRequest, Doador.class);
+    }
+
+    private PostDoadorResponse postDoadorResponse(Doador doador) {
+
+        return modelMapper.map(doador, PostDoadorResponse.class);
+    }
+
+    private Doador PathDoadorRequest(PathDoadorRequest pathDoadorRequest) {
+
+        return modelMapper.map(pathDoadorRequest, Doador.class);
+
+    }
+
+    private PathDoadorResponse pathDoadorResponse(Doador doadorObtido) {
+
+      return modelMapper.map(doadorObtido, PathDoadorResponse.class);
+    }
+
+    private GetDoadorObterResponse getDoadorObterResponse(Doador doadorObtido) {
+
+    return modelMapper.map(doadorObtido, GetDoadorObterResponse.class);
+    }
+
+    public GetDoadorListarResponse converter(Doador doador) {
+        return modelMapper.map(doador, GetDoadorListarResponse.class);
+    }
+
 }
