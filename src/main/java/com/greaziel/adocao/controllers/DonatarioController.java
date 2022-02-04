@@ -1,6 +1,8 @@
 package com.greaziel.adocao.controllers;
 
-import com.greaziel.adocao.domains.Donatario;
+import com.greaziel.adocao.dtos.requests.PathDonatarioRequest;
+import com.greaziel.adocao.dtos.requests.PostDonatarioRequest;
+import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.services.DonatarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +18,14 @@ public class DonatarioController {
     private DonatarioService donatarioService;
 
     @PostMapping
-    public ResponseEntity<Donatario> criar(@RequestBody Donatario donatario) {
-        Donatario donatarioCriado = donatarioService.criar(donatario);
+    public ResponseEntity<PostDonatarioResponse> criar(@RequestBody PostDonatarioRequest postDonatarioRequest) {
+        PostDonatarioResponse donatarioCriado = donatarioService.criar(postDonatarioRequest);
         return ResponseEntity.created(null).body(donatarioCriado);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Donatario> atualizar(@RequestBody Donatario donatario, @PathVariable int id) {
-        Donatario donatarioAtualizado = donatarioService.atualizar(donatario, id);
+    public ResponseEntity<PathDonatarioResponse> atualizar(@RequestBody PathDonatarioRequest pathDonatarioRequest, @PathVariable int id) {
+        PathDonatarioResponse donatarioAtualizado = donatarioService.atualizar(pathDonatarioRequest, id);
         return ResponseEntity.ok(donatarioAtualizado);
     }
 
@@ -34,15 +36,15 @@ public class DonatarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Donatario> obter(@PathVariable int id) {
-        Donatario donatarioObtido = donatarioService.obter(id);
+    public ResponseEntity<GetDonatarioObterResponse> obter(@PathVariable int id) {
+        GetDonatarioObterResponse donatarioObtido = donatarioService.obter(id);
 
         return ResponseEntity.ok(donatarioObtido);
     }
 
     @GetMapping
-    public ResponseEntity<List<Donatario>> listar() {
-        List<Donatario> listaDonatario = donatarioService.listar();
+    public ResponseEntity<List<GetDonatarioListarResponse>> listar() {
+        List<GetDonatarioListarResponse> listaDonatario = donatarioService.listar();
 
         return ResponseEntity.ok(listaDonatario);
     }

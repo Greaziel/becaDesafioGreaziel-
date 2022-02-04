@@ -69,3 +69,5 @@
 The integration with the database and the remodeling of the controllers classes were also carried out.
 
 ## In to challenge five it was implemented:
+
+the dto package is applied to the dtos concept. Encapsulation was made in the information for greater security of the application
