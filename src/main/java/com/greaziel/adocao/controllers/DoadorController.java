@@ -7,6 +7,7 @@ import com.greaziel.adocao.dtos.responses.GetDoadorObterResponse;
 import com.greaziel.adocao.dtos.responses.PathDoadorResponse;
 import com.greaziel.adocao.dtos.responses.PostDoadorResponse;
 import com.greaziel.adocao.services.DoadorSevice;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/doador")
+@RequiredArgsConstructor
 public class DoadorController {
 
-    @Autowired
-    private DoadorSevice doadorSevice;
+    private final DoadorSevice doadorSevice;
 
     @PostMapping
     public ResponseEntity<PostDoadorResponse> criar(@RequestBody PostDoadorRequest postDoadorRequest) {

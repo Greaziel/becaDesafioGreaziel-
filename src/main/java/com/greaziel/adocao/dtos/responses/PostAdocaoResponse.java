@@ -1,13 +1,11 @@
 package com.greaziel.adocao.dtos.responses;
 
-import com.greaziel.adocao.domains.Adocao;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class PostAdocaoResponse {
 
+   private Integer id;
    private String Doador;
    private String Donatario;
    private String pet;

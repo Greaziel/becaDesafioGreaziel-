@@ -1,12 +1,10 @@
 package com.greaziel.adocao.dtos.requests;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
+@Data
 public class PathPetsRequest {
 
     @NotBlank(message = "O campo nome não pode ser nulo")
@@ -22,7 +20,7 @@ public class PathPetsRequest {
     private Boolean vacinado;
     private Boolean doado;
 
-    @NotBlank(message = "O campo proprietario não pode ser nulo")
+    @NotBlank(message = "O campo proprietário não pode ser nulo")
     private Integer proprietario;
 
 }

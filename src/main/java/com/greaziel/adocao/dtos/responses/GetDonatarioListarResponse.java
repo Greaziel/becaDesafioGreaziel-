@@ -1,12 +1,11 @@
 package com.greaziel.adocao.dtos.responses;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class GetDonatarioListarResponse {
 
+    private Integer id;
     private String nome;
     private String cidade;
     private String tipoPet;

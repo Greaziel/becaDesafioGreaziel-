@@ -39,9 +39,7 @@ public class PetsService implements PetsInterface {
         petsCriado.setProprietario(doador);
         petsRepository.save(petsCriado);
 
-        PostPetsResponse postPetsResponse = this.postPetsResponse(petsCriado);
-
-        return postPetsResponse;
+        return this.postPetsResponse(petsCriado);
 
     }
 
@@ -60,9 +58,7 @@ public class PetsService implements PetsInterface {
         petAtualizado.setProprietario(doador);
         petsRepository.save(petAtualizado);
 
-        PathPetsResponse pathPetsResponse = this.pathPetsResponse(petAtualizado);
-
-        return pathPetsResponse;
+        return this.pathPetsResponse(petAtualizado);
 
     }
 
@@ -72,14 +68,12 @@ public class PetsService implements PetsInterface {
 
     public GetPetsObterResponse obter(Integer id) {
 
-        Pets petObtido = petsRepository.findById(id).get();;
+        Pets petObtido = petsRepository.findById(id).get();
+        ;
 
-        GetPetsObterResponse getPetsObterResponse = this.getPetsObterResponse(petObtido);
-
-        return getPetsObterResponse;
+        return this.getPetsObterResponse(petObtido);
 
     }
-
 
 
     public List<GetPetsListarResponse> listar() {
@@ -141,7 +135,7 @@ public class PetsService implements PetsInterface {
 
     }
 
-    private GetPetsListarResponse getPetsListarResponse(Pets pets){
+    private GetPetsListarResponse getPetsListarResponse(Pets pets) {
 
         return modelMapper.map(pets, GetPetsListarResponse.class);
     }

@@ -1,13 +1,11 @@
 package com.greaziel.adocao.dtos.responses;
 
-import com.greaziel.adocao.domains.Pets;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class GetPetsListarResponse {
 
+    private Integer id;
     private String nome;
     private String raca;
     private String cor;

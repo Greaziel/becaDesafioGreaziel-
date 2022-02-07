@@ -1,10 +1,8 @@
 package com.greaziel.adocao.dtos.responses;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class GetDonatarioObterResponse {
 
     private Integer id;

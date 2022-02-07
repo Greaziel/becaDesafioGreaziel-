@@ -6,6 +6,7 @@ import com.greaziel.adocao.dtos.requests.PostDonatarioRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.interfaces.DonatarioInterface;
 import com.greaziel.adocao.repositorys.DonatarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DonatarioService implements DonatarioInterface {
 
-    @Autowired
-    private DonatarioRepository donatarioRepository;
+    private final DonatarioRepository donatarioRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public PostDonatarioResponse criar(PostDonatarioRequest postDonatarioRequest) {
 
@@ -31,9 +31,8 @@ public class DonatarioService implements DonatarioInterface {
         Donatario donatarioCriado = this.postDonatarioRequest(postDonatarioRequest);
         donatarioRepository.save(donatarioCriado);
 
-        PostDonatarioResponse postDonatarioResponse = this.postDonatarioResponse(donatarioCriado);
+        return this.postDonatarioResponse(donatarioCriado);
 
-        return postDonatarioResponse;
     }
 
     public PathDonatarioResponse atualizar(PathDonatarioRequest pathDonatarioRequest, Integer id) {
@@ -43,9 +42,8 @@ public class DonatarioService implements DonatarioInterface {
         donatarioAtualizado.setId(donatarioObtido.getId());
         donatarioRepository.save(donatarioAtualizado);
 
-        PathDonatarioResponse pathDonatarioResponse = this.pathDonatarioResponse(donatarioAtualizado);
+        return this.pathDonatarioResponse(donatarioAtualizado);
 
-        return pathDonatarioResponse;
     }
 
     public void deletar(Integer id) {
@@ -57,9 +55,9 @@ public class DonatarioService implements DonatarioInterface {
         if (donatarioObtido.getId() == null) {
             throw new RuntimeException("Doador com o id " + donatarioObtido.getId() + " não encontrado");
         }
-        GetDonatarioObterResponse getDonatarioObtido = this.getDonatarioObterResponse(donatarioObtido);
+        return this.getDonatarioObterResponse(donatarioObtido);
 
-        return getDonatarioObtido;
+
     }
 
 
