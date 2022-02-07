@@ -1,12 +1,10 @@
 package com.greaziel.adocao.dtos.requests;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
+@Data
 public class PostDoadorRequest {
 
     @NotBlank(message = "O campo nome não pode ser nulo")

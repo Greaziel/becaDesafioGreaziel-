@@ -8,6 +8,7 @@ import com.greaziel.adocao.dtos.responses.GetAdocaoOberResponse;
 import com.greaziel.adocao.dtos.responses.PathAdocaoResponse;
 import com.greaziel.adocao.dtos.responses.PostAdocaoResponse;
 import com.greaziel.adocao.services.AdocaoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/adocao")
+@RequiredArgsConstructor
 public class AdocaoController {
 
-    @Autowired
-    private AdocaoService adocaoService;
+
+    private final AdocaoService adocaoService;
 
     @PostMapping
     public ResponseEntity<PostAdocaoResponse> criar(@RequestBody PostAdocaoRequest postAdocaoRequest) {

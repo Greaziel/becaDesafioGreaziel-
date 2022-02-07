@@ -1,21 +1,19 @@
 package com.greaziel.adocao.dtos.requests;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
+@Data
 public class PostAdocaoRequest {
 
-    @NotBlank(message = "O campo doador não pode ser nulo")
+    @NotBlank(message = "O campo Doador não pode ser nulo")
     private Integer doador;
 
-    @NotBlank(message = "O campo doador não pode ser nulo")
+    @NotBlank(message = "O campo Donatario não pode ser nulo")
     private Integer donatario;
 
-    @NotBlank(message = "O campo doador não pode ser nulo")
+    @NotBlank(message = "O campo Pet não pode ser nulo")
     private Integer pet;
 
 }

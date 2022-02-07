@@ -48,9 +48,7 @@ public class AdocaoService implements AdocaoInterface {
         adocaoCriada.setPet(pets);
         adocaoRepository.save(adocaoCriada);
 
-        PostAdocaoResponse postAdocaoResponse = this.postAdocaoResponse(adocaoCriada);
-
-        return postAdocaoResponse;
+        return this.postAdocaoResponse(adocaoCriada);
 
     }
 
@@ -72,9 +70,7 @@ public class AdocaoService implements AdocaoInterface {
         adocaoAtualizada.setPet(pets);
         adocaoRepository.save(adocaoAtualizada);
 
-        PathAdocaoResponse pathAdocaoResponse = this.pathAdocaoResponse(adocaoAtualizada);
-
-        return pathAdocaoResponse;
+        return this.pathAdocaoResponse(adocaoAtualizada);
 
     }
 
@@ -85,9 +81,8 @@ public class AdocaoService implements AdocaoInterface {
     public GetAdocaoOberResponse obter(Integer id) {
         Adocao adocaoObter = adocaoRepository.findById(id).get();
 
-        GetAdocaoOberResponse adocaoOberResponse = this.getAdocaoOberResponse(adocaoObter);
+        return this.getAdocaoOberResponse(adocaoObter);
 
-        return adocaoOberResponse;
     }
 
     public List<GetAdocaoListarResponse> listar() {

@@ -4,6 +4,7 @@ import com.greaziel.adocao.dtos.requests.PathDonatarioRequest;
 import com.greaziel.adocao.dtos.requests.PostDonatarioRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.services.DonatarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/donatario")
+@RequiredArgsConstructor
 public class DonatarioController {
 
-    @Autowired
-    private DonatarioService donatarioService;
+    private final DonatarioService donatarioService;
 
     @PostMapping
     public ResponseEntity<PostDonatarioResponse> criar(@RequestBody PostDonatarioRequest postDonatarioRequest) {

@@ -9,6 +9,7 @@ import com.greaziel.adocao.dtos.responses.PathDoadorResponse;
 import com.greaziel.adocao.dtos.responses.PostDoadorResponse;
 import com.greaziel.adocao.interfaces.DoadorInterface;
 import com.greaziel.adocao.repositorys.DoadorRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DoadorSevice implements DoadorInterface {
 
-    @Autowired
-    private DoadorRepository doadorRepository;
+    private final DoadorRepository doadorRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public PostDoadorResponse criar(PostDoadorRequest postDoadorRequest) {
 
@@ -34,9 +34,9 @@ public class DoadorSevice implements DoadorInterface {
         Doador doador = this.postDoadorRequest(postDoadorRequest);
         doadorRepository.save(doador);
 
-        PostDoadorResponse postDoadorResponse = this.postDoadorResponse(doador);
+        return this.postDoadorResponse(doador);
 
-        return postDoadorResponse;
+
     }
 
     public PathDoadorResponse atualizar(PathDoadorRequest pathDoadorRequest, Integer id) {
@@ -46,9 +46,8 @@ public class DoadorSevice implements DoadorInterface {
         doadorAtualizado.setId(doadorObtido.getId());
         doadorRepository.save(doadorAtualizado);
 
-        PathDoadorResponse pathDoadorResponse = this.pathDoadorResponse(doadorAtualizado);
+        return this.pathDoadorResponse(doadorAtualizado);
 
-        return pathDoadorResponse;
     }
 
     public void deletar(Integer id) {
@@ -64,9 +63,8 @@ public class DoadorSevice implements DoadorInterface {
             throw new RuntimeException("Doador com o id " + doadorObtido.getId() + " não encontrado");
         }
 
-        GetDoadorObterResponse getDoadorObter = this.getDoadorObterResponse(doadorObtido);
+        return this.getDoadorObterResponse(doadorObtido);
 
-        return getDoadorObter;
     }
 
     public List<GetDoadorListarResponse> listar() {
@@ -98,12 +96,12 @@ public class DoadorSevice implements DoadorInterface {
 
     private PathDoadorResponse pathDoadorResponse(Doador doadorObtido) {
 
-      return modelMapper.map(doadorObtido, PathDoadorResponse.class);
+        return modelMapper.map(doadorObtido, PathDoadorResponse.class);
     }
 
     private GetDoadorObterResponse getDoadorObterResponse(Doador doadorObtido) {
 
-    return modelMapper.map(doadorObtido, GetDoadorObterResponse.class);
+        return modelMapper.map(doadorObtido, GetDoadorObterResponse.class);
     }
 
     public GetDoadorListarResponse converter(Doador doador) {
