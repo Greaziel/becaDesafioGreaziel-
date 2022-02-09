@@ -1,16 +1,15 @@
 package com.greaziel.adocao.controllers;
 
 
-import com.greaziel.adocao.domains.Pets;
-import com.greaziel.adocao.dtos.requests.PathPetsRequest;
+import com.greaziel.adocao.dtos.requests.PatchPetsRequest;
 import com.greaziel.adocao.dtos.requests.PostPetsRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.services.PetsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,14 +20,14 @@ public class PetsController {
     private final PetsService petsService;
 
     @PostMapping
-    public ResponseEntity<PostPetsResponse> criar(@RequestBody PostPetsRequest postPetsRequest) {
+    public ResponseEntity<PostPetsResponse> criar(@RequestBody @Valid PostPetsRequest postPetsRequest) {
         PostPetsResponse petAtualizado = petsService.criar(postPetsRequest);
         return ResponseEntity.created(null).body(petAtualizado);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PathPetsResponse> atualizar(@RequestBody PathPetsRequest pathPetsRequest, @PathVariable int id) {
-        PathPetsResponse petAtualizado = petsService.atualizar(pathPetsRequest, id);
+    public ResponseEntity<PatchPetsResponse> atualizar(@RequestBody @Valid PatchPetsRequest pathPetsRequest, @PathVariable int id) {
+        PatchPetsResponse petAtualizado = petsService.atualizar(pathPetsRequest, id);
         return ResponseEntity.ok(petAtualizado);
     }
 

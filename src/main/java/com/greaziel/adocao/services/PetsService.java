@@ -2,7 +2,7 @@ package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Doador;
 import com.greaziel.adocao.domains.Pets;
-import com.greaziel.adocao.dtos.requests.PathPetsRequest;
+import com.greaziel.adocao.dtos.requests.PatchPetsRequest;
 import com.greaziel.adocao.dtos.requests.PostPetsRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.interfaces.PetsInterface;
@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,11 +43,7 @@ public class PetsService implements PetsInterface {
 
     }
 
-    public PathPetsResponse atualizar(PathPetsRequest pathPetsRequest, Integer id) {
-
-        if (pathPetsRequest.getNome().length() < 3) {
-            throw new RuntimeException("Nome inválido");
-        }
+    public PatchPetsResponse atualizar(PatchPetsRequest pathPetsRequest, Integer id) {
 
         Pets petObtido = petsRepository.findById(id).get();
         GetDoadorObterResponse getDoadorObterResponse = doadorSevice.obter(pathPetsRequest.getProprietario());
@@ -79,12 +75,9 @@ public class PetsService implements PetsInterface {
     public List<GetPetsListarResponse> listar() {
 
         List<Pets> listaPets = petsRepository.findAll();
-        List<GetPetsListarResponse> petsListarResponses = new ArrayList<>();
 
-        listaPets.stream().forEach(pets ->
-                petsListarResponses.add(this.getPetsListarResponse(pets)));
-
-        return petsListarResponses;
+        return listaPets.stream().map(this::getPetsListarResponse)
+                .collect(Collectors.toList());
     }
 
 //    public List<GetPetsMathResponse> mathPetDonatario(Integer idDonatario) {
@@ -99,43 +92,43 @@ public class PetsService implements PetsInterface {
 //
 //    }
 
-    private Doador getDoadorObterResponse(GetDoadorObterResponse getDoadorObterResponse) {
+    public Doador getDoadorObterResponse(GetDoadorObterResponse getDoadorObterResponse) {
 
         return modelMapper.map(getDoadorObterResponse, Doador.class);
 
     }
 
-    private Pets postPetsRequest(PostPetsRequest postPetsRequest) {
+    public Pets postPetsRequest(PostPetsRequest postPetsRequest) {
 
         return modelMapper.map(postPetsRequest, Pets.class);
 
     }
 
-    private PostPetsResponse postPetsResponse(Pets petsCriado) {
+    public PostPetsResponse postPetsResponse(Pets petsCriado) {
 
         return modelMapper.map(petsCriado, PostPetsResponse.class);
 
     }
 
-    private Pets pathPetsRequest(PathPetsRequest pathPetsRequest) {
+    public Pets pathPetsRequest(PatchPetsRequest pathPetsRequest) {
 
         return modelMapper.map(pathPetsRequest, Pets.class);
 
     }
 
-    private PathPetsResponse pathPetsResponse(Pets petAtualizado) {
+    public PatchPetsResponse pathPetsResponse(Pets petAtualizado) {
 
-        return modelMapper.map(petAtualizado, PathPetsResponse.class);
+        return modelMapper.map(petAtualizado, PatchPetsResponse.class);
 
     }
 
-    private GetPetsObterResponse getPetsObterResponse(Pets petObtido) {
+    public GetPetsObterResponse getPetsObterResponse(Pets petObtido) {
 
         return modelMapper.map(petObtido, GetPetsObterResponse.class);
 
     }
 
-    private GetPetsListarResponse getPetsListarResponse(Pets pets) {
+    public GetPetsListarResponse getPetsListarResponse(Pets pets) {
 
         return modelMapper.map(pets, GetPetsListarResponse.class);
     }

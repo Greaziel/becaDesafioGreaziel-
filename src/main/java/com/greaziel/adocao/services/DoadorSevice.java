@@ -1,21 +1,20 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Doador;
-import com.greaziel.adocao.dtos.requests.PathDoadorRequest;
+import com.greaziel.adocao.dtos.requests.PatchDoadorRequest;
 import com.greaziel.adocao.dtos.requests.PostDoadorRequest;
 import com.greaziel.adocao.dtos.responses.GetDoadorListarResponse;
 import com.greaziel.adocao.dtos.responses.GetDoadorObterResponse;
-import com.greaziel.adocao.dtos.responses.PathDoadorResponse;
+import com.greaziel.adocao.dtos.responses.PatchDoadorResponse;
 import com.greaziel.adocao.dtos.responses.PostDoadorResponse;
 import com.greaziel.adocao.interfaces.DoadorInterface;
 import com.greaziel.adocao.repositorys.DoadorRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,22 +26,17 @@ public class DoadorSevice implements DoadorInterface {
 
     public PostDoadorResponse criar(PostDoadorRequest postDoadorRequest) {
 
-        if (postDoadorRequest.getNome().length() <= 3) {
-            throw new RuntimeException("Nome inválido");
-        }
-
         Doador doador = this.postDoadorRequest(postDoadorRequest);
         doadorRepository.save(doador);
 
         return this.postDoadorResponse(doador);
 
-
     }
 
-    public PathDoadorResponse atualizar(PathDoadorRequest pathDoadorRequest, Integer id) {
+    public PatchDoadorResponse atualizar(PatchDoadorRequest pathDoadorRequest, Integer id) {
 
         Doador doadorObtido = doadorRepository.findById(id).get();
-        Doador doadorAtualizado = this.PathDoadorRequest(pathDoadorRequest);
+        Doador doadorAtualizado = this.pathDoadorRequest(pathDoadorRequest);
         doadorAtualizado.setId(doadorObtido.getId());
         doadorRepository.save(doadorAtualizado);
 
@@ -70,36 +64,32 @@ public class DoadorSevice implements DoadorInterface {
     public List<GetDoadorListarResponse> listar() {
 
         List<Doador> listaDoador = doadorRepository.findAll();
-        List<GetDoadorListarResponse> doadorListarResponse = new ArrayList<>();
 
-        listaDoador.stream().forEach(doador ->
-                doadorListarResponse.add(this.converter(doador)));
-
-        return doadorListarResponse;
+        return listaDoador.stream().map(this::converter).collect(Collectors.toList());
     }
 
-    private Doador postDoadorRequest(PostDoadorRequest postDoadorRequest) {
+    public Doador postDoadorRequest(PostDoadorRequest postDoadorRequest) {
 
         return modelMapper.map(postDoadorRequest, Doador.class);
     }
 
-    private PostDoadorResponse postDoadorResponse(Doador doador) {
+    public PostDoadorResponse postDoadorResponse(Doador doador) {
 
         return modelMapper.map(doador, PostDoadorResponse.class);
     }
 
-    private Doador PathDoadorRequest(PathDoadorRequest pathDoadorRequest) {
+    public Doador pathDoadorRequest(PatchDoadorRequest pathDoadorRequest) {
 
         return modelMapper.map(pathDoadorRequest, Doador.class);
 
     }
 
-    private PathDoadorResponse pathDoadorResponse(Doador doadorObtido) {
+    public PatchDoadorResponse pathDoadorResponse(Doador doadorObtido) {
 
-        return modelMapper.map(doadorObtido, PathDoadorResponse.class);
+        return modelMapper.map(doadorObtido, PatchDoadorResponse.class);
     }
 
-    private GetDoadorObterResponse getDoadorObterResponse(Doador doadorObtido) {
+    public GetDoadorObterResponse getDoadorObterResponse(Doador doadorObtido) {
 
         return modelMapper.map(doadorObtido, GetDoadorObterResponse.class);
     }

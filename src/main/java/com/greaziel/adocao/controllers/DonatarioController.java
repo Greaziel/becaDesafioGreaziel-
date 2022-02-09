@@ -1,14 +1,14 @@
 package com.greaziel.adocao.controllers;
 
-import com.greaziel.adocao.dtos.requests.PathDonatarioRequest;
+import com.greaziel.adocao.dtos.requests.PatchDonatarioRequest;
 import com.greaziel.adocao.dtos.requests.PostDonatarioRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.services.DonatarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,14 +19,14 @@ public class DonatarioController {
     private final DonatarioService donatarioService;
 
     @PostMapping
-    public ResponseEntity<PostDonatarioResponse> criar(@RequestBody PostDonatarioRequest postDonatarioRequest) {
+    public ResponseEntity<PostDonatarioResponse> criar(@RequestBody @Valid PostDonatarioRequest postDonatarioRequest) {
         PostDonatarioResponse donatarioCriado = donatarioService.criar(postDonatarioRequest);
         return ResponseEntity.created(null).body(donatarioCriado);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PathDonatarioResponse> atualizar(@RequestBody PathDonatarioRequest pathDonatarioRequest, @PathVariable int id) {
-        PathDonatarioResponse donatarioAtualizado = donatarioService.atualizar(pathDonatarioRequest, id);
+    public ResponseEntity<PatchDonatarioResponse> atualizar(@RequestBody @Valid PatchDonatarioRequest pathDonatarioRequest, @PathVariable int id) {
+        PatchDonatarioResponse donatarioAtualizado = donatarioService.atualizar(pathDonatarioRequest, id);
         return ResponseEntity.ok(donatarioAtualizado);
     }
 

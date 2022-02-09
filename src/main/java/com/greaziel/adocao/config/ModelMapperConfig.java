@@ -39,7 +39,7 @@ public class ModelMapperConfig {
                 src -> src.getPet().getNome(), (dest, value) -> dest.setPet(value)
         );
 
-        modelMapper.createTypeMap(Adocao.class, PathAdocaoResponse.class).<String>addMapping(
+        modelMapper.createTypeMap(Adocao.class, PatchAdocaoResponse.class).<String>addMapping(
                 src -> src.getDoador().getNome(), (dest, value) -> dest.setDoador(value)
         ).<String>addMapping(src -> src.getDonatario().getNome(), (dest, value) -> dest.setDonatario(value)
         ).<String>addMapping(

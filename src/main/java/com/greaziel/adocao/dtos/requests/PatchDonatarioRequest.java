@@ -3,9 +3,10 @@ package com.greaziel.adocao.dtos.requests;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
-public class PathDonatarioRequest {
+public class PatchDonatarioRequest {
 
     @NotBlank(message = "O campo nome não pode ser nulo")
     private String nome;

@@ -4,7 +4,7 @@ import com.greaziel.adocao.domains.Adocao;
 import com.greaziel.adocao.domains.Doador;
 import com.greaziel.adocao.domains.Donatario;
 import com.greaziel.adocao.domains.Pets;
-import com.greaziel.adocao.dtos.requests.PathAdocaoRequest;
+import com.greaziel.adocao.dtos.requests.PatchhAdocaoRequest;
 import com.greaziel.adocao.dtos.requests.PostAdocaoRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.interfaces.AdocaoInterface;
@@ -13,21 +13,17 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AdocaoService implements AdocaoInterface {
 
     private final DoadorSevice doadorSevice;
-
     private final DonatarioService donatarioService;
-
     private final PetsService petsService;
-
     private final AdocaoRepository adocaoRepository;
-
     private final ModelMapper modelMapper;
 
 
@@ -52,7 +48,7 @@ public class AdocaoService implements AdocaoInterface {
 
     }
 
-    public PathAdocaoResponse atualizar(PathAdocaoRequest pathAdocaoRequest, Integer id) {
+    public PatchAdocaoResponse atualizar(PatchhAdocaoRequest pathAdocaoRequest, Integer id) {
 
         Adocao adocaoAtualizada = adocaoRepository.getById(id);
         GetDoadorObterResponse getDoadorObterResponse = doadorSevice.obter(pathAdocaoRequest.getDoador());
@@ -88,52 +84,49 @@ public class AdocaoService implements AdocaoInterface {
     public List<GetAdocaoListarResponse> listar() {
 
         List<Adocao> listaAdocao = adocaoRepository.findAll();
-        List<GetAdocaoListarResponse> getAdocaoListarResponseList = new ArrayList<>();
 
-        listaAdocao.stream().forEach(adocao ->
-                getAdocaoListarResponseList.add(this.getAdocaoListarResponse(adocao)));
-
-        return getAdocaoListarResponseList;
+        return listaAdocao.stream().map(this::getAdocaoListarResponse)
+                .collect(Collectors.toList());
 
     }
 
-    private Doador getDoadorObterResponse(GetDoadorObterResponse getDoadorObterResponse){
+    public Doador getDoadorObterResponse(GetDoadorObterResponse getDoadorObterResponse){
 
         return modelMapper.map(getDoadorObterResponse, Doador.class);
 
     }
 
-    private Donatario getDonatarioObterResponse(GetDonatarioObterResponse getDonatarioObterResponse){
+    public Donatario getDonatarioObterResponse(GetDonatarioObterResponse getDonatarioObterResponse){
 
         return modelMapper.map(getDonatarioObterResponse, Donatario.class);
 
     }
 
-    private Pets getPetsObterResponse(GetPetsObterResponse getPetsObterResponse){
+    public Pets getPetsObterResponse(GetPetsObterResponse getPetsObterResponse){
 
         return modelMapper.map(getPetsObterResponse, Pets.class);
 
     }
 
-    private PostAdocaoResponse postAdocaoResponse(Adocao adocaoCriada) {
+    public PostAdocaoResponse postAdocaoResponse(Adocao adocaoCriada) {
 
         return modelMapper.map(adocaoCriada, PostAdocaoResponse.class);
 
     }
 
-    private PathAdocaoResponse pathAdocaoResponse(Adocao adocaoAtualizada) {
+    public PatchAdocaoResponse pathAdocaoResponse(Adocao adocaoAtualizada) {
 
-        return modelMapper.map(adocaoAtualizada, PathAdocaoResponse.class);
+        return modelMapper.map(adocaoAtualizada, PatchAdocaoResponse.class);
 
     }
 
-    private GetAdocaoOberResponse getAdocaoOberResponse(Adocao adocaoObter) {
+    public GetAdocaoOberResponse getAdocaoOberResponse(Adocao adocaoObter) {
 
         return modelMapper.map(adocaoObter, GetAdocaoOberResponse.class);
 
     }
 
-    private GetAdocaoListarResponse getAdocaoListarResponse(Adocao adocao){
+    public GetAdocaoListarResponse getAdocaoListarResponse(Adocao adocao){
 
         return modelMapper.map(adocao, GetAdocaoListarResponse.class);
 

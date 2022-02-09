@@ -1,17 +1,18 @@
 package com.greaziel.adocao.controllers;
 
-import com.greaziel.adocao.dtos.requests.PathDoadorRequest;
+import com.greaziel.adocao.dtos.requests.PatchDoadorRequest;
 import com.greaziel.adocao.dtos.requests.PostDoadorRequest;
 import com.greaziel.adocao.dtos.responses.GetDoadorListarResponse;
 import com.greaziel.adocao.dtos.responses.GetDoadorObterResponse;
-import com.greaziel.adocao.dtos.responses.PathDoadorResponse;
+import com.greaziel.adocao.dtos.responses.PatchDoadorResponse;
 import com.greaziel.adocao.dtos.responses.PostDoadorResponse;
 import com.greaziel.adocao.services.DoadorSevice;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,14 +23,14 @@ public class DoadorController {
     private final DoadorSevice doadorSevice;
 
     @PostMapping
-    public ResponseEntity<PostDoadorResponse> criar(@RequestBody PostDoadorRequest postDoadorRequest) {
+    public ResponseEntity<PostDoadorResponse> criar(@RequestBody @Valid PostDoadorRequest postDoadorRequest) {
         PostDoadorResponse doadorCriado = doadorSevice.criar(postDoadorRequest);
         return ResponseEntity.created(null).body(doadorCriado);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PathDoadorResponse> atualizar(@RequestBody PathDoadorRequest doador, @PathVariable Integer id) {
-        PathDoadorResponse doadorAtualizado = doadorSevice.atualizar(doador, id);
+    public ResponseEntity<PatchDoadorResponse> atualizar(@RequestBody @Valid PatchDoadorRequest doador, @PathVariable Integer id) {
+        PatchDoadorResponse doadorAtualizado = doadorSevice.atualizar(doador, id);
         return ResponseEntity.ok(doadorAtualizado);
     }
 

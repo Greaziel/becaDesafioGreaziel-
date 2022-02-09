@@ -3,7 +3,7 @@ package com.greaziel.adocao.dtos.responses;
 import lombok.Data;
 
 @Data
-public class PathDonatarioResponse {
+public class PatchDonatarioResponse {
 
     private Integer id;
     private String nome;

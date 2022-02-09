@@ -1,18 +1,21 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Donatario;
-import com.greaziel.adocao.dtos.requests.PathDonatarioRequest;
+import com.greaziel.adocao.dtos.requests.PatchDonatarioRequest;
 import com.greaziel.adocao.dtos.requests.PostDonatarioRequest;
-import com.greaziel.adocao.dtos.responses.*;
+import com.greaziel.adocao.dtos.responses.GetDonatarioListarResponse;
+import com.greaziel.adocao.dtos.responses.GetDonatarioObterResponse;
+import com.greaziel.adocao.dtos.responses.PatchDonatarioResponse;
+import com.greaziel.adocao.dtos.responses.PostDonatarioResponse;
+import com.greaziel.adocao.exceptions.TamanhoNaoValidoExeption;
 import com.greaziel.adocao.interfaces.DonatarioInterface;
 import com.greaziel.adocao.repositorys.DonatarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +28,7 @@ public class DonatarioService implements DonatarioInterface {
     public PostDonatarioResponse criar(PostDonatarioRequest postDonatarioRequest) {
 
         if (postDonatarioRequest.getNome().length() <= 3) {
-            throw new RuntimeException("Nome inválido");
+            throw new TamanhoNaoValidoExeption("Nome não pode ser menor do que 3 caracteres");
         }
 
         Donatario donatarioCriado = this.postDonatarioRequest(postDonatarioRequest);
@@ -35,11 +38,14 @@ public class DonatarioService implements DonatarioInterface {
 
     }
 
-    public PathDonatarioResponse atualizar(PathDonatarioRequest pathDonatarioRequest, Integer id) {
+    public PatchDonatarioResponse atualizar(PatchDonatarioRequest pathDonatarioRequest, Integer id) {
 
         Donatario donatarioObtido = donatarioRepository.findById(id).get();
         Donatario donatarioAtualizado = this.pathDonatarioResquest(pathDonatarioRequest);
         donatarioAtualizado.setId(donatarioObtido.getId());
+        if (pathDonatarioRequest.getNome().length() <= 3) {
+            throw new TamanhoNaoValidoExeption("Nome não pode ser menor do que 3 caracteres");
+        }
         donatarioRepository.save(donatarioAtualizado);
 
         return this.pathDonatarioResponse(donatarioAtualizado);
@@ -52,11 +58,8 @@ public class DonatarioService implements DonatarioInterface {
 
     public GetDonatarioObterResponse obter(Integer id) {
         Donatario donatarioObtido = donatarioRepository.findById(id).get();
-        if (donatarioObtido.getId() == null) {
-            throw new RuntimeException("Doador com o id " + donatarioObtido.getId() + " não encontrado");
-        }
-        return this.getDonatarioObterResponse(donatarioObtido);
 
+        return this.getDonatarioObterResponse(donatarioObtido);
 
     }
 
@@ -65,46 +68,41 @@ public class DonatarioService implements DonatarioInterface {
     public List<GetDonatarioListarResponse> listar() {
 
         List<Donatario> listaDonatario = donatarioRepository.findAll();
-        List<GetDonatarioListarResponse> getDonatarioListars = new ArrayList<>();
 
-        listaDonatario.stream().forEach(donatario ->
-                getDonatarioListars.add(this.getDonatarioListarResponse(donatario)));
-
-        return getDonatarioListars;
-
+        return listaDonatario.stream().map(this::getDonatarioListarResponse)
+                .collect(Collectors.toList());
     }
-
-    private Donatario postDonatarioRequest(PostDonatarioRequest postDonatarioRequest) {
+    public Donatario postDonatarioRequest(PostDonatarioRequest postDonatarioRequest) {
 
         return modelMapper.map(postDonatarioRequest, Donatario.class);
 
     }
 
-    private PostDonatarioResponse postDonatarioResponse(Donatario donatarioCriado) {
+    public PostDonatarioResponse postDonatarioResponse(Donatario donatarioCriado) {
 
         return modelMapper.map(donatarioCriado, PostDonatarioResponse.class);
 
     }
 
-    private Donatario pathDonatarioResquest(PathDonatarioRequest pathDonatarioRequest) {
+    public Donatario pathDonatarioResquest(PatchDonatarioRequest pathDonatarioRequest) {
 
         return modelMapper.map(pathDonatarioRequest, Donatario.class);
 
     }
 
-    private PathDonatarioResponse pathDonatarioResponse(Donatario donatarioObtido) {
+    public PatchDonatarioResponse pathDonatarioResponse(Donatario donatarioObtido) {
 
-        return modelMapper.map(donatarioObtido, PathDonatarioResponse.class);
+        return modelMapper.map(donatarioObtido, PatchDonatarioResponse.class);
 
     }
 
-    private GetDonatarioObterResponse getDonatarioObterResponse(Donatario donatarioObtido) {
+    public GetDonatarioObterResponse getDonatarioObterResponse(Donatario donatarioObtido) {
 
         return modelMapper.map(donatarioObtido, GetDonatarioObterResponse.class);
 
     }
 
-    private GetDonatarioListarResponse getDonatarioListarResponse(Donatario donatario){
+    public GetDonatarioListarResponse getDonatarioListarResponse(Donatario donatario){
 
         return modelMapper.map(donatario, GetDonatarioListarResponse.class);
     }

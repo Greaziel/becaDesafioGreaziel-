@@ -77,3 +77,7 @@ the dto package is applied to the dtos concept. Encapsulation was made in the in
 + Mappers
 + Lombok
 + JSR
+
+## In to challenge seven it was implemented:
+
+Error handling has been done
