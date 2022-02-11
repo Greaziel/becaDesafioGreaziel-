@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class PatchhAdocaoRequest {
 
     @NotBlank(message = "O campo Doador não pode ser nulo")
-    @Size(min = 4, message = "Nome não pode ser menor do que 4")
+    @Size(min = 1, message = "Nome não pode ser menor do que 4")
     private Integer doador;
 
     @NotBlank(message = "O campo Donatario não pode ser nulo")

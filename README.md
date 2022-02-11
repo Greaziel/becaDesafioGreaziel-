@@ -36,6 +36,14 @@
     <td>Spring Boot</td>
     <td>2.6</td>
   </tr>
+ <tr>
+    <td>Docker</td>
+    <td>20.10.12</td>
+  </tr>
+ <tr>
+    <td>DBeaver</td>
+    <td>21.3.4</td>
+  </tr>
 </table>
 
 ## Class diagram
@@ -81,3 +89,12 @@ the dto package is applied to the dtos concept. Encapsulation was made in the in
 ## In to challenge seven it was implemented:
 
 Error handling has been done
+
++ MethodArgumentNotValidException
++ UnexpectedTypeException
++ DataIntegrityViolationException
++ HttpMessageNotReadableException
+
+## In to challenge eight it was implemented:
+
+Docker was introduced and a container with a mysql image was made

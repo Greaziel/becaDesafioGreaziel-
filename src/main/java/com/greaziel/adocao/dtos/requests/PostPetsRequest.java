@@ -2,6 +2,7 @@ package com.greaziel.adocao.dtos.requests;
 
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -20,7 +21,7 @@ public class PostPetsRequest {
     private Boolean vacinado;
     private Boolean doado;
 
-    @NotBlank(message = "O campo proprietário não pode ser nulo")
+    @Min(1)
     private Integer proprietario;
 
 }
