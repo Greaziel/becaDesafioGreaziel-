@@ -9,7 +9,6 @@ import com.greaziel.adocao.dtos.responses.PostDoadorResponse;
 import com.greaziel.adocao.services.DoadorSevice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

@@ -3,7 +3,10 @@ package com.greaziel.adocao.controllers;
 
 import com.greaziel.adocao.dtos.requests.PatchPetsRequest;
 import com.greaziel.adocao.dtos.requests.PostPetsRequest;
-import com.greaziel.adocao.dtos.responses.*;
+import com.greaziel.adocao.dtos.responses.GetPetsListarResponse;
+import com.greaziel.adocao.dtos.responses.GetPetsObterResponse;
+import com.greaziel.adocao.dtos.responses.PatchPetsResponse;
+import com.greaziel.adocao.dtos.responses.PostPetsResponse;
 import com.greaziel.adocao.services.PetsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

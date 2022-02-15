@@ -21,7 +21,7 @@ public class PostPetsRequest {
     private Boolean vacinado;
     private Boolean doado;
 
-    @Min(1)
+    @Min(value = 1)
     private Integer proprietario;
 
 }

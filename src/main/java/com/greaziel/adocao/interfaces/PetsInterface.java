@@ -2,7 +2,10 @@ package com.greaziel.adocao.interfaces;
 
 import com.greaziel.adocao.dtos.requests.PatchPetsRequest;
 import com.greaziel.adocao.dtos.requests.PostPetsRequest;
-import com.greaziel.adocao.dtos.responses.*;
+import com.greaziel.adocao.dtos.responses.GetPetsListarResponse;
+import com.greaziel.adocao.dtos.responses.GetPetsObterResponse;
+import com.greaziel.adocao.dtos.responses.PatchPetsResponse;
+import com.greaziel.adocao.dtos.responses.PostPetsResponse;
 
 import java.util.List;
 

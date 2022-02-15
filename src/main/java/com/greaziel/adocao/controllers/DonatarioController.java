@@ -2,7 +2,10 @@ package com.greaziel.adocao.controllers;
 
 import com.greaziel.adocao.dtos.requests.PatchDonatarioRequest;
 import com.greaziel.adocao.dtos.requests.PostDonatarioRequest;
-import com.greaziel.adocao.dtos.responses.*;
+import com.greaziel.adocao.dtos.responses.GetDonatarioListarResponse;
+import com.greaziel.adocao.dtos.responses.GetDonatarioObterResponse;
+import com.greaziel.adocao.dtos.responses.PatchDonatarioResponse;
+import com.greaziel.adocao.dtos.responses.PostDonatarioResponse;
 import com.greaziel.adocao.services.DonatarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
