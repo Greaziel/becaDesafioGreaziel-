@@ -3,7 +3,7 @@ package com.greaziel.adocao.dtos.responses;
 import lombok.Data;
 
 @Data
-public class GetPetsObterResponse {
+public class PatchPetsResponse {
 
     private Integer id;
     private String nome;
@@ -12,8 +12,5 @@ public class GetPetsObterResponse {
     private String cor;
     private String sexo;
     private Double peso;
-    private Integer doador;
-    private String proprietario;
-    private String cidade;
 
 }

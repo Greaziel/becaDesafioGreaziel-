@@ -1,8 +1,11 @@
 package com.greaziel.adocao.domains;
 
 
+import lombok.Data;
+
 import javax.persistence.Entity;
 
+@Data
 @Entity
 public class Donatario extends Pessoa {
 
@@ -11,38 +14,4 @@ public class Donatario extends Pessoa {
     private String racaPet;
     private String portePet;
 
-    public Donatario() {
-    }
-
-    public String getTipoPet() {
-        return tipoPet;
-    }
-
-    public void setTipoPet(String tipoPet) {
-        this.tipoPet = tipoPet;
-    }
-
-    public String getCorPet() {
-        return corPet;
-    }
-
-    public void setCorPet(String corPet) {
-        this.corPet = corPet;
-    }
-
-    public String getRacaPet() {
-        return racaPet;
-    }
-
-    public void setRacaPet(String racaPet) {
-        this.racaPet = racaPet;
-    }
-
-    public String getPortePet() {
-        return portePet;
-    }
-
-    public void setPortePet(String portePet) {
-        this.portePet = portePet;
-    }
 }

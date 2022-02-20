@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class PostDoadorRequest {
+public class PatchDoadorRequest {
 
     @NotBlank(message = "O campo nome não pode ser nulo")
     @Size(min = 4, message = "Nome não pode ser menor do que 4")

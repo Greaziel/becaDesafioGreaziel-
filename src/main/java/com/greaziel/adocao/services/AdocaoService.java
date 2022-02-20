@@ -1,160 +1,134 @@
 package com.greaziel.adocao.services;
 
-import com.greaziel.adocao.domains.*;
-import com.greaziel.adocao.dtos.requests.PathAdocaoRequest;
+import com.greaziel.adocao.domains.Adocao;
+import com.greaziel.adocao.domains.Doador;
+import com.greaziel.adocao.domains.Donatario;
+import com.greaziel.adocao.domains.Pets;
+import com.greaziel.adocao.dtos.requests.PatchhAdocaoRequest;
 import com.greaziel.adocao.dtos.requests.PostAdocaoRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.interfaces.AdocaoInterface;
 import com.greaziel.adocao.repositorys.AdocaoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdocaoService implements AdocaoInterface {
 
-    @Autowired
-    private DoadorSevice doadorSevice;
-
-    @Autowired
-    private DonatarioService donatarioService;
-
-    @Autowired
-    private PetsService petsService;
-
-    @Autowired
-    private AdocaoRepository adocaoRepository;
+    private final DoadorSevice doadorSevice;
+    private final DonatarioService donatarioService;
+    private final PetsService petsService;
+    private final AdocaoRepository adocaoRepository;
+    private final ModelMapper modelMapper;
 
 
     public PostAdocaoResponse criar(PostAdocaoRequest postAdocaoRequest) {
 
         GetDoadorObterResponse getDoadorObterResponse = doadorSevice.obter(postAdocaoRequest.getDoador());
-        Doador doador = new Doador();
-        doador.setId(getDoadorObterResponse.getId());
-        doador.setNome(getDoadorObterResponse.getNome());
-        doador.setCidade(getDoadorObterResponse.getCidade());
-        doador.setLogradouro(getDoadorObterResponse.getLogradouro());
-        doador.setCep(getDoadorObterResponse.getCep());
-        doador.setNumero(getDoadorObterResponse.getNumero());
-        doador.setEstado(getDoadorObterResponse.getEstado());
+        Doador doador = this.getDoadorObterResponse(getDoadorObterResponse);
 
         GetDonatarioObterResponse getDonatarioObterResponse = donatarioService.obter(postAdocaoRequest.getDonatario());
-        Donatario donatario = new Donatario();
-        donatario.setId(getDonatarioObterResponse.getId());
-        donatario.setNome(getDonatarioObterResponse.getNome());
-        donatario.setCidade(getDonatarioObterResponse.getCidade());
-        donatario.setEstado(getDonatarioObterResponse.getEstado());
-        donatario.setPortePet(getDonatarioObterResponse.getPortePet());
-        donatario.setTipoPet(getDonatarioObterResponse.getTipoPet());
-        donatario.setCorPet(getDonatarioObterResponse.getCorPet());
-        donatario.setRacaPet(getDonatarioObterResponse.getRacaPet());
+        Donatario donatario = this.getDonatarioObterResponse(getDonatarioObterResponse);
 
-        GetPetsObterResponse getPetsObterResponse = petsService.obter(postAdocaoRequest.getAnimal());
-        Pets pets = new Pets();
-        pets.setId(getPetsObterResponse.getId());
-        pets.setNome(getPetsObterResponse.getNome());
-        pets.setTipo(getPetsObterResponse.getCor());
-        pets.setRaca(getPetsObterResponse.getRaca());
-        pets.setSexo(getPetsObterResponse.getSexo());
-        pets.setCor(getPetsObterResponse.getCor());
-        pets.setPeso(getPetsObterResponse.getPeso());
-        pets.setProprietario(doador);
+        GetPetsObterResponse getPetsObterResponse = petsService.obter(postAdocaoRequest.getPet());
+        Pets pets = this.getPetsObterResponse(getPetsObterResponse);
 
         Adocao adocaoCriada = new Adocao();
         adocaoCriada.setDoador(doador);
         adocaoCriada.setDonatario(donatario);
-        adocaoCriada.setAnimal(pets);
+        adocaoCriada.setPet(pets);
         adocaoRepository.save(adocaoCriada);
 
-        PostAdocaoResponse postAdocaoResponse = new PostAdocaoResponse();
-        postAdocaoResponse.setNomeDoador(adocaoCriada.getDoador().getNome());
-        postAdocaoResponse.setNomeDonatario(adocaoCriada.getDonatario().getNome());
-        postAdocaoResponse.setNomeAnimal(adocaoCriada.getAnimal().getNome());
+        return this.postAdocaoResponse(adocaoCriada);
 
-        return postAdocaoResponse;
     }
 
-    public PathAdocaoResponse atualizar(PathAdocaoRequest pathAdocaoRequest, Integer id) {
+    public PatchAdocaoResponse atualizar(PatchhAdocaoRequest pathAdocaoRequest, Integer id) {
+
         Adocao adocaoAtualizada = adocaoRepository.getById(id);
         GetDoadorObterResponse getDoadorObterResponse = doadorSevice.obter(pathAdocaoRequest.getDoador());
-        Doador doador = new Doador();
-        doador.setId(getDoadorObterResponse.getId());
-        doador.setNome(getDoadorObterResponse.getNome());
-        doador.setCidade(getDoadorObterResponse.getCidade());
-        doador.setLogradouro(getDoadorObterResponse.getLogradouro());
-        doador.setCep(getDoadorObterResponse.getCep());
-        doador.setNumero(getDoadorObterResponse.getNumero());
-        doador.setEstado(getDoadorObterResponse.getEstado());
+        Doador doador = this.getDoadorObterResponse(getDoadorObterResponse);
 
         GetDonatarioObterResponse getDonatarioObterResponse = donatarioService.obter(pathAdocaoRequest.getDonatario());
-        Donatario donatario = new Donatario();
-        donatario.setId(getDonatarioObterResponse.getId());
-        donatario.setNome(getDonatarioObterResponse.getNome());
-        donatario.setCidade(getDonatarioObterResponse.getCidade());
-        donatario.setEstado(getDonatarioObterResponse.getEstado());
-        donatario.setPortePet(getDonatarioObterResponse.getPortePet());
-        donatario.setTipoPet(getDonatarioObterResponse.getTipoPet());
-        donatario.setCorPet(getDonatarioObterResponse.getCorPet());
-        donatario.setRacaPet(getDonatarioObterResponse.getRacaPet());
+        Donatario donatario = this.getDonatarioObterResponse(getDonatarioObterResponse);
 
-        GetPetsObterResponse getPetsObterResponse = petsService.obter(pathAdocaoRequest.getAnimal());
-        Pets pets = new Pets();
-        pets.setId(getPetsObterResponse.getId());
-        pets.setNome(getPetsObterResponse.getNome());
-        pets.setTipo(getPetsObterResponse.getCor());
-        pets.setRaca(getPetsObterResponse.getRaca());
-        pets.setSexo(getPetsObterResponse.getSexo());
-        pets.setCor(getPetsObterResponse.getCor());
-        pets.setPeso(getPetsObterResponse.getPeso());
-        pets.setProprietario(doador);
+        GetPetsObterResponse getPetsObterResponse = petsService.obter(pathAdocaoRequest.getPet());
+        Pets pets = this.getPetsObterResponse(getPetsObterResponse);
 
         adocaoAtualizada.setId(id);
         adocaoAtualizada.setDoador(doador);
         adocaoAtualizada.setDonatario(donatario);
-        adocaoAtualizada.setAnimal(pets);
+        adocaoAtualizada.setPet(pets);
         adocaoRepository.save(adocaoAtualizada);
 
-        PathAdocaoResponse pathAdocaoResponse = new PathAdocaoResponse();
-        pathAdocaoResponse.setNomeDoador(adocaoAtualizada.getDoador().getNome());
-        pathAdocaoResponse.setNomeDonatario(adocaoAtualizada.getDonatario().getNome());
-        pathAdocaoResponse.setNomeAnimal(adocaoAtualizada.getAnimal().getNome());
+        return this.pathAdocaoResponse(adocaoAtualizada);
 
-        return pathAdocaoResponse;
     }
 
-    public void deletar(Integer id) {
+   public void deletar(Integer id) {
         adocaoRepository.deleteById(id);
     }
 
     public GetAdocaoOberResponse obter(Integer id) {
         Adocao adocaoObter = adocaoRepository.findById(id).get();
 
-        GetAdocaoOberResponse adocaoOberResponse = new GetAdocaoOberResponse();
-        adocaoOberResponse.setId(adocaoObter.getId());
-        adocaoOberResponse.setNomeDoador(adocaoObter.getDoador().getNome());
-        adocaoOberResponse.setCidadeDoador(adocaoObter.getDoador().getCidade());
-        adocaoOberResponse.setNomeDonatario(adocaoObter.getDonatario().getNome());
-        adocaoOberResponse.setCidadeDonatario(adocaoObter.getDonatario().getCidade());
-        adocaoOberResponse.setNomePet(adocaoObter.getAnimal().getNome());
-        adocaoOberResponse.setRacaPet(adocaoObter.getAnimal().getRaca());
+        return this.getAdocaoOberResponse(adocaoObter);
 
-        return adocaoOberResponse;
     }
 
     public List<GetAdocaoListarResponse> listar() {
-        List<Adocao> listaAdocao = adocaoRepository.findAll();
-        List<GetAdocaoListarResponse> getAdocaoListarResponseList = new ArrayList<>();
-        listaAdocao.forEach(adocao -> {
-            GetAdocaoListarResponse getAdocaoListarResponse = new GetAdocaoListarResponse();
-            getAdocaoListarResponse.setDoador(adocao.getDoador().getNome());
-            getAdocaoListarResponse.setDonatario(adocao.getDonatario().getNome());
-            getAdocaoListarResponse.setAnimal(adocao.getAnimal().getNome());
-            getAdocaoListarResponseList.add(getAdocaoListarResponse);
-        });
 
-        return getAdocaoListarResponseList;
+        List<Adocao> listaAdocao = adocaoRepository.findAll();
+
+        return listaAdocao.stream().map(this::getAdocaoListarResponse)
+                .collect(Collectors.toList());
+
+    }
+
+    public Doador getDoadorObterResponse(GetDoadorObterResponse getDoadorObterResponse){
+
+        return modelMapper.map(getDoadorObterResponse, Doador.class);
+
+    }
+
+    public Donatario getDonatarioObterResponse(GetDonatarioObterResponse getDonatarioObterResponse){
+
+        return modelMapper.map(getDonatarioObterResponse, Donatario.class);
+
+    }
+
+    public Pets getPetsObterResponse(GetPetsObterResponse getPetsObterResponse){
+
+        return modelMapper.map(getPetsObterResponse, Pets.class);
+
+    }
+
+    public PostAdocaoResponse postAdocaoResponse(Adocao adocaoCriada) {
+
+        return modelMapper.map(adocaoCriada, PostAdocaoResponse.class);
+
+    }
+
+    public PatchAdocaoResponse pathAdocaoResponse(Adocao adocaoAtualizada) {
+
+        return modelMapper.map(adocaoAtualizada, PatchAdocaoResponse.class);
+
+    }
+
+    public GetAdocaoOberResponse getAdocaoOberResponse(Adocao adocaoObter) {
+
+        return modelMapper.map(adocaoObter, GetAdocaoOberResponse.class);
+
+    }
+
+    public GetAdocaoListarResponse getAdocaoListarResponse(Adocao adocao){
+
+        return modelMapper.map(adocao, GetAdocaoListarResponse.class);
 
     }
 }

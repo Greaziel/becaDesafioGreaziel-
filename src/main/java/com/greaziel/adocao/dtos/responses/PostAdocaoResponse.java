@@ -1,32 +1,13 @@
 package com.greaziel.adocao.dtos.responses;
 
+import lombok.Data;
+
+@Data
 public class PostAdocaoResponse {
 
-   private String nomeDoador;
-   private String nomeDonatario;
-   private String nomeAnimal;
+   private Integer id;
+   private String Doador;
+   private String Donatario;
+   private String pet;
 
-    public String getNomeDoador() {
-        return nomeDoador;
-    }
-
-    public void setNomeDoador(String nomeDoador) {
-        this.nomeDoador = nomeDoador;
-    }
-
-    public String getNomeDonatario() {
-        return nomeDonatario;
-    }
-
-    public void setNomeDonatario(String nomeDonatario) {
-        this.nomeDonatario = nomeDonatario;
-    }
-
-    public String getNomeAnimal() {
-        return nomeAnimal;
-    }
-
-    public void setNomeAnimal(String nomeAnimal) {
-        this.nomeAnimal = nomeAnimal;
-    }
 }

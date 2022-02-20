@@ -1,9 +1,11 @@
 package com.greaziel.adocao.interfaces;
 
-import com.greaziel.adocao.domains.Pets;
-import com.greaziel.adocao.dtos.requests.PathPetsRequest;
+import com.greaziel.adocao.dtos.requests.PatchPetsRequest;
 import com.greaziel.adocao.dtos.requests.PostPetsRequest;
-import com.greaziel.adocao.dtos.responses.*;
+import com.greaziel.adocao.dtos.responses.GetPetsListarResponse;
+import com.greaziel.adocao.dtos.responses.GetPetsObterResponse;
+import com.greaziel.adocao.dtos.responses.PatchPetsResponse;
+import com.greaziel.adocao.dtos.responses.PostPetsResponse;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ public interface PetsInterface {
 
     PostPetsResponse criar(PostPetsRequest postPetsRequest);
 
-    PathPetsResponse atualizar(PathPetsRequest pathPetsRequest, Integer id);
+    PatchPetsResponse atualizar(PatchPetsRequest pathPetsRequest, Integer id);
 
     void deletar(Integer id);
 

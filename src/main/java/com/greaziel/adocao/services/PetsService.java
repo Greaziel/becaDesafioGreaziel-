@@ -2,16 +2,17 @@ package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Doador;
 import com.greaziel.adocao.domains.Pets;
-import com.greaziel.adocao.dtos.requests.PathPetsRequest;
+import com.greaziel.adocao.dtos.requests.PatchPetsRequest;
 import com.greaziel.adocao.dtos.requests.PostPetsRequest;
 import com.greaziel.adocao.dtos.responses.*;
 import com.greaziel.adocao.interfaces.PetsInterface;
 import com.greaziel.adocao.repositorys.PetsRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,8 @@ public class PetsService implements PetsInterface {
 
     private final DonatarioService donatarioService;
 
+    private final ModelMapper modelMapper;
+
     public PostPetsResponse criar(PostPetsRequest postPetsRequest) {
 
         if (postPetsRequest.getNome().length() < 3) {
@@ -30,75 +33,29 @@ public class PetsService implements PetsInterface {
         }
 
         GetDoadorObterResponse getDoadorObterResponse = doadorSevice.obter(postPetsRequest.getProprietario());
-        Doador doador = new Doador();
-        doador.setNome(getDoadorObterResponse.getNome());
-        doador.setEstado(getDoadorObterResponse.getEstado());
-        doador.setCidade(getDoadorObterResponse.getCidade());
-        doador.setLogradouro(getDoadorObterResponse.getLogradouro());
-        doador.setNumero(getDoadorObterResponse.getNumero());
-        doador.setCep(getDoadorObterResponse.getCep());
+        Doador doador = this.getDoadorObterResponse(getDoadorObterResponse);
 
-        Pets petsCriado = new Pets();
-        petsCriado.setNome(postPetsRequest.getNome());
-        petsCriado.setTipo(postPetsRequest.getTipo());
-        petsCriado.setCor(postPetsRequest.getCor());
-        petsCriado.setPorte(postPetsRequest.getPorte());
-        petsCriado.setPeso(postPetsRequest.getPeso());
-        petsCriado.setRaca(postPetsRequest.getRaca());
-        petsCriado.setSexo(postPetsRequest.getSexo());
-        petsCriado.setVacinado(postPetsRequest.getVacinado());
-        petsCriado.setDoado(postPetsRequest.getDoado());
+        Pets petsCriado = this.postPetsRequest(postPetsRequest);
         petsCriado.setProprietario(doador);
         petsRepository.save(petsCriado);
 
-        PostPetsResponse postPetsResponse = new PostPetsResponse();
-        postPetsResponse.setNome(petsCriado.getNome());
-        postPetsResponse.setPorte(petsCriado.getPorte());
-        postPetsResponse.setRaca(petsCriado.getRaca());
-        postPetsResponse.setPeso(petsCriado.getPeso());
-        postPetsResponse.setCor(petsCriado.getCor());
-        postPetsResponse.setSexo(petsCriado.getSexo());
+        return this.postPetsResponse(petsCriado);
 
-        return postPetsResponse;
     }
 
-    public PathPetsResponse atualizar(PathPetsRequest pathPetsRequest, Integer id) {
+    public PatchPetsResponse atualizar(PatchPetsRequest pathPetsRequest, Integer id) {
 
-        if (pathPetsRequest.getNome().length() < 3) {
-            throw new RuntimeException("Nome inválido");
-        }
-
-        Pets petAtualizado = petsRepository.findById(id).get();
+        Pets petObtido = petsRepository.findById(id).get();
         GetDoadorObterResponse getDoadorObterResponse = doadorSevice.obter(pathPetsRequest.getProprietario());
-        Doador doador = new Doador();
-        doador.setNome(getDoadorObterResponse.getNome());
-        doador.setEstado(getDoadorObterResponse.getEstado());
-        doador.setCidade(getDoadorObterResponse.getCidade());
-        doador.setLogradouro(getDoadorObterResponse.getLogradouro());
-        doador.setNumero(getDoadorObterResponse.getNumero());
-        doador.setCep(getDoadorObterResponse.getCep());
+        Doador doador = this.getDoadorObterResponse(getDoadorObterResponse);
 
-        petAtualizado.setNome(pathPetsRequest.getNome());
-        petAtualizado.setSexo(pathPetsRequest.getSexo());
-        petAtualizado.setPeso(pathPetsRequest.getPeso());
-        petAtualizado.setTipo(pathPetsRequest.getTipo());
-        petAtualizado.setPorte(pathPetsRequest.getPorte());
-        petAtualizado.setRaca(pathPetsRequest.getRaca());
-        petAtualizado.setCor(pathPetsRequest.getCor());
-        petAtualizado.setVacinado(pathPetsRequest.getVacinado());
-        petAtualizado.setDoado(pathPetsRequest.getDoado());
+        Pets petAtualizado = this.pathPetsRequest(pathPetsRequest);
+        petAtualizado.setId(petObtido.getId());
         petAtualizado.setProprietario(doador);
         petsRepository.save(petAtualizado);
 
-        PathPetsResponse pathPetsResponse = new PathPetsResponse();
-        pathPetsResponse.setNome(petAtualizado.getNome());
-        pathPetsResponse.setPeso(petAtualizado.getPeso());
-        pathPetsResponse.setPorte(petAtualizado.getPorte());
-        pathPetsResponse.setRaca(petAtualizado.getRaca());
-        pathPetsResponse.setSexo(petAtualizado.getSexo());
-        pathPetsResponse.setCor(petAtualizado.getCor());
+        return this.pathPetsResponse(petAtualizado);
 
-        return pathPetsResponse;
     }
 
     public void deletar(Integer id) {
@@ -108,38 +65,19 @@ public class PetsService implements PetsInterface {
     public GetPetsObterResponse obter(Integer id) {
 
         Pets petObtido = petsRepository.findById(id).get();
-        GetDoadorObterResponse doadorObterResponse = new GetDoadorObterResponse();
-        doadorObterResponse.setId(petObtido.getProprietario().getId());
-        doadorObterResponse.setNome(petObtido.getProprietario().getNome());
-        doadorObterResponse.setCidade(petObtido.getProprietario().getCidade());
-        doadorObterResponse.setEstado(petObtido.getProprietario().getEstado());
-        doadorObterResponse.setLogradouro(petObtido.getProprietario().getLogradouro());
-        doadorObterResponse.setNumero(petObtido.getProprietario().getNumero());
-        doadorObterResponse.setCep(petObtido.getProprietario().getCep());
+        ;
 
-        GetPetsObterResponse getPetsObterResponse = new GetPetsObterResponse();
-        getPetsObterResponse.setId(petObtido.getId());
-        getPetsObterResponse.setNome(petObtido.getNome());
-        getPetsObterResponse.setRaca(petObtido.getRaca());
-        getPetsObterResponse.setSexo(petObtido.getSexo());
-        getPetsObterResponse.setCor(petObtido.getCor());
-        getPetsObterResponse.setPeso(petObtido.getPeso());
-        getPetsObterResponse.setPorte(petObtido.getPorte());
-        getPetsObterResponse.setGetDoadorObterResponse(doadorObterResponse);
-
-        return getPetsObterResponse;
+        return this.getPetsObterResponse(petObtido);
 
     }
+
 
     public List<GetPetsListarResponse> listar() {
 
         List<Pets> listaPets = petsRepository.findAll();
-        List<GetPetsListarResponse> petsListarResponses = new ArrayList<>();
 
-        listaPets.stream().forEach(pets ->
-                petsListarResponses.add(new GetPetsListarResponse(pets)));
-
-        return petsListarResponses;
+        return listaPets.stream().map(this::getPetsListarResponse)
+                .collect(Collectors.toList());
     }
 
 //    public List<GetPetsMathResponse> mathPetDonatario(Integer idDonatario) {
@@ -153,4 +91,45 @@ public class PetsService implements PetsInterface {
 //        );
 //
 //    }
+
+    public Doador getDoadorObterResponse(GetDoadorObterResponse getDoadorObterResponse) {
+
+        return modelMapper.map(getDoadorObterResponse, Doador.class);
+
+    }
+
+    public Pets postPetsRequest(PostPetsRequest postPetsRequest) {
+
+        return modelMapper.map(postPetsRequest, Pets.class);
+
+    }
+
+    public PostPetsResponse postPetsResponse(Pets petsCriado) {
+
+        return modelMapper.map(petsCriado, PostPetsResponse.class);
+
+    }
+
+    public Pets pathPetsRequest(PatchPetsRequest pathPetsRequest) {
+
+        return modelMapper.map(pathPetsRequest, Pets.class);
+
+    }
+
+    public PatchPetsResponse pathPetsResponse(Pets petAtualizado) {
+
+        return modelMapper.map(petAtualizado, PatchPetsResponse.class);
+
+    }
+
+    public GetPetsObterResponse getPetsObterResponse(Pets petObtido) {
+
+        return modelMapper.map(petObtido, GetPetsObterResponse.class);
+
+    }
+
+    public GetPetsListarResponse getPetsListarResponse(Pets pets) {
+
+        return modelMapper.map(pets, GetPetsListarResponse.class);
+    }
 }

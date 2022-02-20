@@ -1,79 +1,55 @@
 package com.greaziel.adocao.services;
 
 import com.greaziel.adocao.domains.Donatario;
-import com.greaziel.adocao.dtos.requests.PathDonatarioRequest;
+import com.greaziel.adocao.dtos.requests.PatchDonatarioRequest;
 import com.greaziel.adocao.dtos.requests.PostDonatarioRequest;
-import com.greaziel.adocao.dtos.responses.*;
+import com.greaziel.adocao.dtos.responses.GetDonatarioListarResponse;
+import com.greaziel.adocao.dtos.responses.GetDonatarioObterResponse;
+import com.greaziel.adocao.dtos.responses.PatchDonatarioResponse;
+import com.greaziel.adocao.dtos.responses.PostDonatarioResponse;
+import com.greaziel.adocao.exceptions.TamanhoNaoValidoExeption;
 import com.greaziel.adocao.interfaces.DonatarioInterface;
 import com.greaziel.adocao.repositorys.DonatarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class DonatarioService implements DonatarioInterface {
 
-    @Autowired
-    private DonatarioRepository donatarioRepository;
+    private final DonatarioRepository donatarioRepository;
+
+    private final ModelMapper modelMapper;
 
     public PostDonatarioResponse criar(PostDonatarioRequest postDonatarioRequest) {
 
         if (postDonatarioRequest.getNome().length() <= 3) {
-            throw new RuntimeException("Nome inválido");
+            throw new TamanhoNaoValidoExeption("Nome não pode ser menor do que 3 caracteres");
         }
 
-        Donatario donatarioCriado = new Donatario();
-        donatarioCriado.setNome(postDonatarioRequest.getNome());
-        donatarioCriado.setCidade(postDonatarioRequest.getCidade());
-        donatarioCriado.setNumero(postDonatarioRequest.getNumero());
-        donatarioCriado.setLogradouro(postDonatarioRequest.getLogradouro());
-        donatarioCriado.setCep(postDonatarioRequest.getCep());
-        donatarioCriado.setEstado(postDonatarioRequest.getEstado());
-        donatarioCriado.setPortePet(postDonatarioRequest.getPortePet());
-        donatarioCriado.setTipoPet(postDonatarioRequest.getTipoPet());
-        donatarioCriado.setRacaPet(postDonatarioRequest.getRacaPet());
-        donatarioCriado.setCorPet(postDonatarioRequest.getCorPet());
+        Donatario donatarioCriado = this.postDonatarioRequest(postDonatarioRequest);
         donatarioRepository.save(donatarioCriado);
 
-        PostDonatarioResponse postDonatarioResponse = new PostDonatarioResponse();
-        postDonatarioResponse.setNome(donatarioCriado.getNome());
-        postDonatarioResponse.setCidade(donatarioCriado.getCidade());
-        postDonatarioResponse.setEstado(donatarioCriado.getEstado());
-        postDonatarioResponse.setPortePet(donatarioCriado.getPortePet());
-        postDonatarioResponse.setRacaPet(donatarioCriado.getRacaPet());
-        postDonatarioResponse.setTipoPet(donatarioCriado.getTipoPet());
-        postDonatarioResponse.setCorPet(donatarioCriado.getCorPet());
+        return this.postDonatarioResponse(donatarioCriado);
 
-        return postDonatarioResponse;
     }
 
-    public PathDonatarioResponse atualizar(PathDonatarioRequest pathDonatarioRequest, Integer id) {
+    public PatchDonatarioResponse atualizar(PatchDonatarioRequest pathDonatarioRequest, Integer id) {
 
-        Donatario donatarioAtualizado = donatarioRepository.findById(id).get();
-        donatarioAtualizado.setNome(pathDonatarioRequest.getNome());
-        donatarioAtualizado.setCidade(pathDonatarioRequest.getCidade());
-        donatarioAtualizado.setCep(pathDonatarioRequest.getCep());
-        donatarioAtualizado.setEstado(pathDonatarioRequest.getEstado());
-        donatarioAtualizado.setLogradouro(pathDonatarioRequest.getLogradouro());
-        donatarioAtualizado.setNumero(pathDonatarioRequest.getNumero());
-        donatarioAtualizado.setCorPet(pathDonatarioRequest.getCorPet());
-        donatarioAtualizado.setPortePet(pathDonatarioRequest.getPortePet());
-        donatarioAtualizado.setRacaPet(pathDonatarioRequest.getRacaPet());
-        donatarioAtualizado.setTipoPet(pathDonatarioRequest.getTipoPet());
+        Donatario donatarioObtido = donatarioRepository.findById(id).get();
+        Donatario donatarioAtualizado = this.pathDonatarioResquest(pathDonatarioRequest);
+        donatarioAtualizado.setId(donatarioObtido.getId());
+        if (pathDonatarioRequest.getNome().length() <= 3) {
+            throw new TamanhoNaoValidoExeption("Nome não pode ser menor do que 3 caracteres");
+        }
         donatarioRepository.save(donatarioAtualizado);
 
-        PathDonatarioResponse pathDonatarioResponse = new PathDonatarioResponse();
-        pathDonatarioResponse.setNome(donatarioAtualizado.getNome());
-        pathDonatarioResponse.setCidade(donatarioAtualizado.getCidade());
-        pathDonatarioResponse.setEstado(donatarioAtualizado.getEstado());
-        pathDonatarioResponse.setPortePet(donatarioAtualizado.getPortePet());
-        pathDonatarioResponse.setRacaPet(donatarioAtualizado.getRacaPet());
-        pathDonatarioResponse.setTipoPet(donatarioAtualizado.getTipoPet());
-        pathDonatarioResponse.setCorPet(donatarioAtualizado.getCorPet());
+        return this.pathDonatarioResponse(donatarioAtualizado);
 
-        return pathDonatarioResponse;
     }
 
     public void deletar(Integer id) {
@@ -82,31 +58,52 @@ public class DonatarioService implements DonatarioInterface {
 
     public GetDonatarioObterResponse obter(Integer id) {
         Donatario donatarioObtido = donatarioRepository.findById(id).get();
-        if (donatarioObtido.getId() == null) {
-            throw new RuntimeException("Doador com o id " + donatarioObtido.getId() + " não encontrado");
-        }
-        GetDonatarioObterResponse getDonatarioObtido = new GetDonatarioObterResponse();
-        getDonatarioObtido.setId(donatarioObtido.getId());
-        getDonatarioObtido.setNome(donatarioObtido.getNome());
-        getDonatarioObtido.setCidade(donatarioObtido.getCidade());
-        getDonatarioObtido.setEstado(donatarioObtido.getEstado());
-        getDonatarioObtido.setTipoPet(donatarioObtido.getTipoPet());
-        getDonatarioObtido.setPortePet(donatarioObtido.getPortePet());
-        getDonatarioObtido.setRacaPet(donatarioObtido.getRacaPet());
-        getDonatarioObtido.setCorPet(donatarioObtido.getCorPet());
 
-        return getDonatarioObtido;
+        return this.getDonatarioObterResponse(donatarioObtido);
+
     }
+
+
 
     public List<GetDonatarioListarResponse> listar() {
 
         List<Donatario> listaDonatario = donatarioRepository.findAll();
-        List<GetDonatarioListarResponse> getDonatarioListars = new ArrayList<>();
 
-        listaDonatario.stream().forEach(donatario ->
-                getDonatarioListars.add(new GetDonatarioListarResponse(donatario)));
+        return listaDonatario.stream().map(this::getDonatarioListarResponse)
+                .collect(Collectors.toList());
+    }
+    public Donatario postDonatarioRequest(PostDonatarioRequest postDonatarioRequest) {
 
-        return getDonatarioListars;
+        return modelMapper.map(postDonatarioRequest, Donatario.class);
 
+    }
+
+    public PostDonatarioResponse postDonatarioResponse(Donatario donatarioCriado) {
+
+        return modelMapper.map(donatarioCriado, PostDonatarioResponse.class);
+
+    }
+
+    public Donatario pathDonatarioResquest(PatchDonatarioRequest pathDonatarioRequest) {
+
+        return modelMapper.map(pathDonatarioRequest, Donatario.class);
+
+    }
+
+    public PatchDonatarioResponse pathDonatarioResponse(Donatario donatarioObtido) {
+
+        return modelMapper.map(donatarioObtido, PatchDonatarioResponse.class);
+
+    }
+
+    public GetDonatarioObterResponse getDonatarioObterResponse(Donatario donatarioObtido) {
+
+        return modelMapper.map(donatarioObtido, GetDonatarioObterResponse.class);
+
+    }
+
+    public GetDonatarioListarResponse getDonatarioListarResponse(Donatario donatario){
+
+        return modelMapper.map(donatario, GetDonatarioListarResponse.class);
     }
 }

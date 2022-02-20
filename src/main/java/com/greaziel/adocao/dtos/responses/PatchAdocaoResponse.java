@@ -3,11 +3,11 @@ package com.greaziel.adocao.dtos.responses;
 import lombok.Data;
 
 @Data
-public class GetAdocaoListarResponse {
+public class PatchAdocaoResponse {
 
     private Integer id;
     private String doador;
-    private String pet;
     private String donatario;
+    private String pet;
 
 }
